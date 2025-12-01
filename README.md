@@ -9,5 +9,5 @@ a - Move left \
 s - Move backwards \
 d - Move right \
 m - Open menu \
-q - Use item slot 1 
+q - Use item slot 1 \
 e - Use item slot 2
