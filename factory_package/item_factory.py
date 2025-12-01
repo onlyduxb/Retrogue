@@ -14,20 +14,34 @@ class Factory(Generic[factory_type]):
     """Factory base class.
 
     ## Description
+    Factory base class used to generate objects of any type dynamically.
     ## Attributes
+    ```
+    cls._data: Dict[str, dict] # Store the dictionary of the name of an objects with its default parameters
+    cls._builders: Dict[str, Callable[..., factory_type]] # Store the builder functions for objects
+    ```
     ## Methods
+    ```
+    cls.initilise_registry(cls) -> None # Initilise cls._data and cls._builders with defaults
+    cls.register(cls, name: str, params: dict) -> None # Register an item
+    cls.get_registry(cls) -> Dict[str, dict] # Returns cls._data
+    cls.create(cls, name: str, **kwargs) -> factory_type # Create some object which is returned.
+    cls.create_random(cls) -> factory_type # Return random item object with random attributes.
+    cls.load_registry(cls, registry_data) # Load save data.
+    cls._build(cls, params: dict) -> factory_type # Build an item of type factory_type.
+    ```
     """
 
     _data: Dict[str, dict] = {}
     _builders: Dict[str, Callable[..., factory_type]] = {}
 
     @classmethod
-    def initilise_registry(cls):
+    def initilise_registry(cls) -> None:
         """Initilise registry."""
         pass
 
     @classmethod
-    def register(cls, name: str, params: dict):
+    def register(cls, name: str, params: dict) -> None:
         """Register an item."""
         cls._data[name] = params
         cls._builders[name] = lambda p=params: cls._build(p)
@@ -46,13 +60,8 @@ class Factory(Generic[factory_type]):
 
     @classmethod
     def create_random(cls) -> factory_type:
-        """Return random weapon object with random attributes."""
+        """Return random item object with random attributes."""
         raise NotImplementedError
-
-    @classmethod
-    def get_registry_save_data(cls):
-        """Compile registry data into a dictionary that can be saved to json."""
-        return cls._data
 
     @classmethod
     def load_registry(cls, registry_data):
@@ -72,8 +81,22 @@ class WeaponFactory(Factory[Weapon]):
     """Weapon factory.
 
     ## Description
+    Weapon factory base class used to generate weapons dynamically.
     ## Attributes
+    ```
+    cls._data: Dict[str, dict] # Store the dictionary of the name of an objects with its default parameters
+    cls._builders: Dict[str, Callable[..., factory_type]] # Store the builder functions for objects
+    ```
     ## Methods
+    ```
+    cls.initilise_registry(cls) -> None # Initilise cls._data and cls._builders with defaults
+    cls.register(cls, name: str, params: dict) -> None # Register an item
+    cls.get_registry(cls) -> Dict[str, dict] # Returns cls._data
+    cls.create(cls, name: str, **kwargs) -> factory_type # Create some object which is returned.
+    cls.create_random(cls) -> factory_type # Return random item object with random attributes.
+    cls.load_registry(cls, registry_data) # Load save data.
+    cls._build(cls, params: dict) -> factory_type # Build an item of type factory_type.
+    ```
     """
 
     _data: Dict[str, dict] = {}
@@ -110,8 +133,22 @@ class ItemFactory(Factory[Item]):
     """Item factory.
 
     ## Description
+    Item factory base class used to generate items dynamically.
     ## Attributes
+    ```
+    cls._data: Dict[str, dict] # Store the dictionary of the name of an objects with its default parameters
+    cls._builders: Dict[str, Callable[..., factory_type]] # Store the builder functions for objects
+    ```
     ## Methods
+    ```
+    cls.initilise_registry(cls) -> None # Initilise cls._data and cls._builders with defaults
+    cls.register(cls, name: str, params: dict) -> None # Register an item
+    cls.get_registry(cls) -> Dict[str, dict] # Returns cls._data
+    cls.create(cls, name: str, **kwargs) -> factory_type # Create some object which is returned.
+    cls.create_random(cls) -> factory_type # Return random item object with random attributes.
+    cls.load_registry(cls, registry_data) # Load save data.
+    cls._build(cls, params: dict) -> factory_type # Build an item of type factory_type.
+    ```
     """
 
     _data: Dict[str, dict] = {}
@@ -133,17 +170,17 @@ class ItemFactory(Factory[Item]):
     @classmethod
     def _build(cls, params: dict) -> Item:
         return Item(**params)
-    
+
     @classmethod
     def create(cls, name: str, **overrides):
-        """Create a weapon with the ability to override parameters."""
+        """Create a item with the ability to override parameters."""
         if cls._data.get(name) is None:
             raise IndexError("Weapon is not in registry.")
         params = cls._data[name].copy()
         params.update(overrides)  # merge rarity or anything else
 
         return cls._build(params)
-    
+
     @classmethod
     def create_random(cls):
         """Return a random item."""

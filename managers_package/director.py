@@ -13,6 +13,7 @@ from factory_package.item_factory import ItemFactory, WeaponFactory
 from managers_package.debug_manager import Debugger
 from managers_package.entity_manager import Player
 
+
 class Director:
     """Director.
 
@@ -47,16 +48,28 @@ class Director:
     """
 
     def __init__(
-        self, stdscr, overworld_manager, menu_manager, player, save_name, debugger, weapon_factory, item_factory,
+        self,
+        stdscr,
+        overworld_manager,
+        menu_manager,
+        player,
+        save_name,
+        debugger,
+        weapon_factory,
+        item_factory,
     ) -> None:
         """Initialise director."""
         self.stdscr = stdscr  # Curses screen
         self.game_name: str = save_name  # Save name to save data
         self.PLAYER: Player = player  # Player object
-        self.debugger: Debugger = debugger  # Debugger (find in debugger_output/director.txt)
-        self.weapon_factory: WeaponFactory =weapon_factory # Weapon factory
-        self.item_factory: ItemFactory =item_factory # Item factory
-        self.overworld_manager: OverworldManager = overworld_manager  # Overworld manager is permanent
+        self.debugger: Debugger = (
+            debugger  # Debugger (find in debugger_output/director.txt)
+        )
+        self.weapon_factory: WeaponFactory = weapon_factory  # Weapon factory
+        self.item_factory: ItemFactory = item_factory  # Item factory
+        self.overworld_manager: OverworldManager = (
+            overworld_manager  # Overworld manager is permanent
+        )
         self.menu_manager: MenuManager = menu_manager  # Menu manager is permanent
         self.scene_holders = {
             "building": BuildingScene,
@@ -93,7 +106,7 @@ class Director:
             if not next_scene:  # If no key is pressed just continue
                 continue
             action = next_scene.get("action")
-            if next_scene.get('vector', None) is None:
+            if next_scene.get("vector", None) is None:
                 self.debugger.write(next_scene)
 
             match action:
@@ -130,21 +143,23 @@ class Director:
                         ):  # Leaving any building returns you to the overworld
                             scene.on_exit()
                             self.current_scene = "overworld"
-                        case 'death':
-                            self.scenes[
-                                self.current_scene
-                            ].on_exit()
+                        case "death":
+                            self.scenes[self.current_scene].on_exit()
                             self.previous_scene = (
-                                'overworld'
-                            )  # Records the previous scene
-                            self.menu_manager.current_menu=self.menu_manager.factory.create_death_menu()
+                                "overworld"  # Records the previous scene
+                            )
+                            self.menu_manager.current_menu = (
+                                self.menu_manager.factory.create_death_menu()
+                            )
                             self.current_scene = "menu"
 
                 case "open_menu":  # Opens the menu
                     self.previous_scene = (
                         self.current_scene
                     )  # Records the previous scene
-                    self.menu_manager.current_menu=self.menu_manager.factory.create_main_menu()
+                    self.menu_manager.current_menu = (
+                        self.menu_manager.factory.create_main_menu()
+                    )
                     self.current_scene = "menu"
                 case "exit_menu":
                     self.current_scene = (
@@ -152,37 +167,46 @@ class Director:
                     )  # Retuns to the previous scene
                     self.previous_scene = None
                 case "use_item":
-                    item_index=next_scene.get('slot')
+                    item_index = next_scene.get("slot")
                     self.PLAYER.use_item(item_index)
-                    self.PLAYER.inventory[item_index]=self.item_factory.create('None')
+                    self.PLAYER.inventory[item_index] = self.item_factory.create("None")
 
                 case _:
                     menu_index = next_scene.get("menu_index")
                     if menu_index is not None:
                         result = scene.manager_obj.run_selected_menu(menu_index)
-                        menu_action = result.get('action')
+                        menu_action = result.get("action")
                         match menu_action:
                             case "resume":
                                 self.current_scene = self.previous_scene
                                 self.previous_scene = None
-                            case 'save_game':
+                            case "save_game":
                                 save_game(
                                     save_name=self.game_name,
                                     player_data=self.PLAYER.get_save_data(),
                                     overworld_data=self.overworld_manager.get_save_data(),
-                                    weapon_registry=self.weapon_factory.get_registry_save_data(),
-                                    item_registry=self.item_factory.get_registry_save_data(),
-                                    debugger=self.debugger
+                                    weapon_registry=self.weapon_factory.get_registry(),
+                                    item_registry=self.item_factory.get_registry(),
+                                    debugger=self.debugger,
                                 )
-                            case 'give_item':
-                                self.PLAYER.pickup(result.get('obj'))
+                            case "give_item":
+                                self.PLAYER.pickup(result.get("obj"))
                             case "respawn":
-                                self.PLAYER.health=self.PLAYER.max_health
-                                if self.PLAYER.death_action().get('keep_inventory') == False:
-                                    self.PLAYER.weapon=self.weapon_factory.create('fists')
-                                    for slot_index in range(len(self.PLAYER.inventory)-1):
-                                        self.PLAYER.inventory[slot_index]=self.item_factory.create('None')
-                                self.new_scene('overworld', self.overworld_manager)
+                                self.PLAYER.health = self.PLAYER.max_health
+                                if (
+                                    self.PLAYER.death_action().get("keep_inventory")
+                                    == False
+                                ):
+                                    self.PLAYER.weapon = self.weapon_factory.create(
+                                        "fists"
+                                    )
+                                    for slot_index in range(
+                                        len(self.PLAYER.inventory) - 1
+                                    ):
+                                        self.PLAYER.inventory[slot_index] = (
+                                            self.item_factory.create("None")
+                                        )
+                                self.new_scene("overworld", self.overworld_manager)
                                 self.overworld_manager.randomise_player_pos()
                             case "quit":
                                 quit()
