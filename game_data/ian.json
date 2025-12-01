@@ -1,0 +1,81 @@
+{
+    "player_data": {
+        "health": -150,
+        "level": 0,
+        "weapon": {
+            "name": "dagger",
+            "damage": 15,
+            "rarity": "Legendary"
+        },
+        "inventory": [
+            {
+                "name": "None",
+                "effects": {
+                    "effect": null,
+                    "strength": 0
+                }
+            },
+            {
+                "name": "None",
+                "effects": {
+                    "effect": null,
+                    "strength": 0
+                }
+            }
+        ]
+    },
+    "overworld_data": {
+        "seed_coordinates": [
+            4131,
+            577
+        ],
+        "player_pos": [
+            14,
+            7
+        ]
+    },
+    "weapon_registry": {
+        "fists": {
+            "name": "fist",
+            "damage": 10,
+            "rarity": "Common"
+        },
+        "sword": {
+            "name": "sword",
+            "damage": 20,
+            "rarity": "Common"
+        },
+        "dagger": {
+            "name": "dagger",
+            "damage": 15,
+            "rarity": "Common"
+        },
+        "mace": {
+            "name": "mace",
+            "damage": 25,
+            "rarity": "Common"
+        },
+        "hammer": {
+            "name": "hammer",
+            "damage": 15,
+            "rarity": "Common"
+        }
+    },
+    "item_registry": {
+        "None": {
+            "name": "None",
+            "effect_name": null,
+            "strength": 0
+        },
+        "health potion": {
+            "name": "health potion",
+            "effect_name": "heal",
+            "strength": 25
+        },
+        "strength potion": {
+            "name": "strength potion",
+            "effect_name": "strength",
+            "strength": 15
+        }
+    }
+}

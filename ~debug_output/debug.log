@@ -1,0 +1,20 @@
+[15:26:27.201] [overworld_generation/OverworldGeneration/__init__] Generating overworld with coordinates (19, 3039) 
+[15:26:27.202] [overworld_generation/OverworldGeneration/add_town] Generating Town at coordinates (25, 25) 
+[15:26:27.204] [overworld_generation/OverworldGeneration/add_dungeon] Generating Dungeon at coordinates (5, 20) 
+[15:26:27.204] [overworld_generation/OverworldGeneration/add_dungeon] Generating Dungeon at coordinates (46, 6) 
+[15:26:27.204] [overworld_generation/OverworldGeneration/add_town] Generating Town at coordinates (23, 46) 
+[15:26:27.205] [overworld_generation/OverworldGeneration/add_town] Generating Town at coordinates (44, 38) 
+[15:26:27.206] [overworld_generation/OverworldGeneration/add_town] Generating Town at coordinates (13, 0) 
+[15:26:27.207] [director/Director/new_scene] Set scene to menu 
+[15:26:27.207] [director/Director/new_scene] Set scene to overworld 
+[15:26:42.645] [room_manager/RoomManager/__init__] Sucessfully created room 
+[15:26:42.649] [director/Director/run] {'action': 'enter', 'next_scene': 'dungeon', 'obj': <managers_package.dungeon_manager.DungeonManager object at 0x10d58bcb0>, 'pos': (6, 20)} 
+[15:26:42.649] [director/Director/new_scene] Set scene to dungeon 
+[15:26:43.323] [room_manager/RoomManager/__init__] Sucessfully created room 
+[15:26:43.324] [dungeon_manager/DungeonManager/move_player] {'action': 'room_transition', 'obj': <managers_package.room_manager.Exit object at 0x10d89c980>, 'player_pos': (10, 5)} 
+[15:26:43.324] [director/Director/run] {'action': 'exit'} 
+[15:26:46.723] [director/Director/run] {'action': 'open_menu'} 
+[15:26:47.794] [director/Director/run] {'action': 'select_menu', 'menu_index': 2} 
+[15:26:47.794] [menu_manager/MenuManager/run_selected_menu] Running <function MenuFactory.create_main_menu.<locals>.save_exit_game at 0x10d741170> 
+[15:26:47.794] [menu_manager/MenuManager/run_selected_menu] Returned {'action': 'save_game'} 
+[15:26:47.794] [save_manager/None/save_game] Game saved to game_data/n 

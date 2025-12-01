@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>managers_package.director &mdash; Retrogue 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=a6a68382" />
+      <link rel="stylesheet" type="text/css" href="../../_static/fonts.css?v=5583d106" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Retrogue
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Retrogue</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">managers_package.director</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for managers_package.director</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Director.&quot;&quot;&quot;</span>
+
+<span class="c1"># -- Imports --</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphics_package.building_scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">BuildingScene</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphics_package.dungeon_scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">DungeonScene</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphics_package.menu_scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">MenuScene</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphics_package.overworld_scene</span><span class="w"> </span><span class="kn">import</span> <span class="n">OverworldScene</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">managers_package.save_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_game</span>
+
+
+<div class="viewcode-block" id="Director">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.director.Director">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Director</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Director.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    The director is the highest level in the hierarchy as it communicates the scenes with their related manager through &#39;actions&#39;.</span>
+<span class="sd">    Actions are dictionaries that are returned in response to an input from a user.</span>
+<span class="sd">    The director first sends the key pressed to a scene which handles the input using the handle_input method.</span>
+<span class="sd">    This returns an action which is passed to the related manager.</span>
+<span class="sd">    ### Scene action example</span>
+<span class="sd">    `{&#39;action&#39;: &#39;move&#39;, &#39;vector&#39;: (-1, 0)}`</span>
+<span class="sd">    The manager then applies game logic e.g moving the player on the map which then returns another action.</span>
+<span class="sd">    ### Manager action example</span>
+<span class="sd">    `{&#39;action&#39;: &#39;enter&#39;, &#39;next_scene&#39;: [building_name], &#39;obj&#39;: [object], &#39;pos&#39;: (int, int)}`</span>
+<span class="sd">    The director then selects the appropriate scene and extracts the object from the action above.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.stdscr = stdscr # Curses screen</span>
+<span class="sd">    self.game_name: str # Save name to save data</span>
+<span class="sd">    self.PLAYER: Player  # Player object</span>
+<span class="sd">    self.debugger: Debugger  # Debugger (find in debugger_output/director.txt)</span>
+<span class="sd">    self.overworld_manager: Overworld manager  # Overworld manager</span>
+<span class="sd">    self.menu_manager: menu_manager  # Menu manager</span>
+<span class="sd">    self.scene_managers: dict[str, scene_obj]  # Stores the manager objects</span>
+<span class="sd">    self.scenes: dict[str, maanger_obj]  # Stores all the scenes</span>
+<span class="sd">    self.previous_scene = None  # Stores the previous scene for the Menu</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    run() # Run the scene.</span>
+<span class="sd">    new_scene(scene_name: str, new_scene_obj: manager, run_scene: bool = True) # Switch the scene.</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">stdscr</span><span class="p">,</span> <span class="n">overworld_manager</span><span class="p">,</span> <span class="n">menu_manager</span><span class="p">,</span> <span class="n">player</span><span class="p">,</span> <span class="n">save_name</span><span class="p">,</span> <span class="n">debugger</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise director.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdscr</span> <span class="o">=</span> <span class="n">stdscr</span>  <span class="c1"># Curses screen</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_name</span> <span class="o">=</span> <span class="n">save_name</span>  <span class="c1"># Save name to save data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PLAYER</span> <span class="o">=</span> <span class="n">player</span>  <span class="c1"># Player object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span> <span class="o">=</span> <span class="n">debugger</span>  <span class="c1"># Debugger (find in debugger_output/director.txt)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overworld_manager</span> <span class="o">=</span> <span class="n">overworld_manager</span>  <span class="c1"># Overworld manager is permanent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_manager</span> <span class="o">=</span> <span class="n">menu_manager</span>  <span class="c1"># Menu manager is permanent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene_holders</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;building&quot;</span><span class="p">:</span> <span class="n">BuildingScene</span><span class="p">,</span>
+            <span class="s2">&quot;dungeon&quot;</span><span class="p">:</span> <span class="n">DungeonScene</span><span class="p">,</span>
+            <span class="s2">&quot;overworld&quot;</span><span class="p">:</span> <span class="n">OverworldScene</span><span class="p">,</span>
+            <span class="s2">&quot;menu&quot;</span><span class="p">:</span> <span class="n">MenuScene</span><span class="p">,</span>
+        <span class="p">}</span>  <span class="c1"># Holds all of the scene objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene_managers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;overworld&quot;</span><span class="p">:</span> <span class="n">overworld_manager</span><span class="p">,</span>
+            <span class="s2">&quot;menu&quot;</span><span class="p">:</span> <span class="n">menu_manager</span><span class="p">,</span>
+        <span class="p">}</span>  <span class="c1"># Stores the manager objects</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenes</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Stores all the scenes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_scene</span><span class="p">(</span>
+            <span class="n">scene_name</span><span class="o">=</span><span class="s2">&quot;menu&quot;</span><span class="p">,</span> <span class="n">new_scene_obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">menu_manager</span><span class="p">,</span> <span class="n">run_scene</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>  <span class="c1"># Adds the Menu scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_scene</span><span class="p">(</span>
+            <span class="n">scene_name</span><span class="o">=</span><span class="s2">&quot;overworld&quot;</span><span class="p">,</span> <span class="n">new_scene_obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">overworld_manager</span>
+        <span class="p">)</span>  <span class="c1"># Adds and runs the Overworld scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">previous_scene</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Stores the previous scene for the Menu</span>
+
+<div class="viewcode-block" id="Director.run">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.director.Director.run">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the scene.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenes</span><span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">on_enter</span><span class="p">()</span>  <span class="c1"># Runs on enter to initilise the scene</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># Selects the current scene manager and scene</span>
+            <span class="n">scene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scenes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span><span class="p">]</span>
+            <span class="n">scene_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene_managers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="n">scene</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>  <span class="c1"># Draws the scene</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdscr</span><span class="o">.</span><span class="n">getch</span><span class="p">()</span>  <span class="c1"># Fetches player input</span>
+            <span class="n">next_scene</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">handle_input</span><span class="p">(</span>
+                <span class="n">key</span>
+            <span class="p">)</span>  <span class="c1"># Scene recieves the player input and returns an action</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">next_scene</span><span class="p">:</span>  <span class="c1"># If no key is pressed just continue</span>
+                <span class="k">continue</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">next_scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c1"># For logging purposes</span>
+                <span class="k">if</span> <span class="n">next_scene</span><span class="p">[</span><span class="s2">&quot;vector&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">next_scene</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">next_scene</span><span class="p">)</span>
+
+            <span class="k">match</span> <span class="n">action</span><span class="p">:</span>
+
+                <span class="k">case</span> <span class="s2">&quot;move&quot;</span><span class="p">:</span>  <span class="c1"># If the player attempts to move</span>
+                    <span class="n">scene</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>  <span class="c1"># Draws the scene</span>
+                    <span class="n">scene_action</span> <span class="o">=</span> <span class="n">scene_manager</span><span class="o">.</span><span class="n">move_player</span><span class="p">(</span>
+                        <span class="n">next_scene</span><span class="p">[</span><span class="s2">&quot;vector&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>  <span class="c1"># Manager recieves the movement vector</span>
+                    <span class="n">scene</span><span class="o">.</span><span class="n">change_text</span><span class="p">(</span>
+                        <span class="n">scene_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notify&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="p">)</span>  <span class="c1"># Types a notification in the bottom of the screen</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">scene_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;moved&quot;</span><span class="p">:</span>  <span class="c1"># Debugging</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">scene_action</span><span class="p">)</span>
+                    <span class="k">match</span> <span class="n">scene_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">):</span>
+                        <span class="k">case</span> <span class="s2">&quot;enter&quot;</span><span class="p">:</span>  <span class="c1"># Runs if the player attempts to enter a building</span>
+                            <span class="n">new_scene_obj</span> <span class="o">=</span> <span class="n">scene_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;obj&quot;</span><span class="p">)</span>  <span class="c1"># Building object</span>
+                            <span class="n">scene</span><span class="o">.</span><span class="n">on_exit</span><span class="p">()</span>  <span class="c1"># Exits the current scene</span>
+                            <span class="k">if</span> <span class="n">scene_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;next_scene&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="p">[</span>
+                                <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;inn&quot;</span><span class="p">,</span>
+                            <span class="p">]:</span>  <span class="c1"># Checks if the player is attempting to enter a building</span>
+                                <span class="n">scene_name</span> <span class="o">=</span> <span class="s2">&quot;building&quot;</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">scene_name</span> <span class="o">=</span> <span class="s2">&quot;dungeon&quot;</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">new_scene</span><span class="p">(</span>
+                                <span class="n">scene_name</span><span class="o">=</span><span class="n">scene_name</span><span class="p">,</span> <span class="n">new_scene_obj</span><span class="o">=</span><span class="n">new_scene_obj</span>
+                            <span class="p">)</span>  <span class="c1"># Changes the scene</span>
+                        <span class="k">case</span> <span class="s2">&quot;room_transition&quot;</span><span class="p">:</span>  <span class="c1"># Dungeon room changes</span>
+                            <span class="n">room_activation</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">manager_obj</span><span class="o">.</span><span class="n">current_room</span><span class="o">.</span><span class="n">activate_room</span><span class="p">(</span>
+                                <span class="n">scene_action</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;player_pos&quot;</span><span class="p">)</span>
+                            <span class="p">)</span>  <span class="c1"># Passes the vector into dungeon manager to activate the next room</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">room_activation</span><span class="p">)</span>
+                        <span class="k">case</span> <span class="p">(</span>
+                            <span class="s2">&quot;exit&quot;</span>
+                        <span class="p">):</span>  <span class="c1"># Leaving any building returns you to the overworld</span>
+                            <span class="n">scene</span><span class="o">.</span><span class="n">on_exit</span><span class="p">()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span> <span class="o">=</span> <span class="s2">&quot;overworld&quot;</span>
+                <span class="k">case</span> <span class="s2">&quot;open_menu&quot;</span><span class="p">:</span>  <span class="c1"># Opens the menu</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">previous_scene</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span>
+                    <span class="p">)</span>  <span class="c1"># Records the previous scene</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span> <span class="o">=</span> <span class="s2">&quot;menu&quot;</span>
+                <span class="k">case</span> <span class="s2">&quot;exit_menu&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;exit_menu&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">previous_scene</span>
+                        <span class="p">)</span>  <span class="c1"># Retuns you to the previous scene</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">previous_scene</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+                    <span class="n">choice</span> <span class="o">=</span> <span class="n">next_scene</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;menu&quot;</span><span class="p">)</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">menu_manager</span><span class="o">.</span><span class="n">select_option</span><span class="p">(</span>
+                        <span class="n">choice</span>
+                    <span class="p">)</span>  <span class="c1"># Selects the chosen option</span>
+                    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;resume&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">previous_scene</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">previous_scene</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">elif</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;open_options&quot;</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                    <span class="k">elif</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;action&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;quit&quot;</span><span class="p">:</span>  <span class="c1"># Saves and quits the game</span>
+                        <span class="n">save_game</span><span class="p">(</span>
+                            <span class="n">save_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">game_name</span><span class="p">,</span>
+                            <span class="n">player_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">PLAYER</span><span class="o">.</span><span class="n">get_save_data</span><span class="p">(),</span>
+                            <span class="n">overworld_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">overworld_manager</span><span class="o">.</span><span class="n">get_save_data</span><span class="p">(),</span>
+                        <span class="p">)</span>  <span class="c1"># Changes the scene</span></div>
+
+
+<div class="viewcode-block" id="Director.new_scene">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.director.Director.new_scene">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">new_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene_name</span><span class="p">,</span> <span class="n">new_scene_obj</span><span class="p">,</span> <span class="n">run_scene</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Switch the scene.&quot;&quot;&quot;</span>
+        <span class="n">new_scene</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene_holders</span><span class="p">[</span><span class="n">scene_name</span><span class="p">](</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stdscr</span>
+        <span class="p">)</span>  <span class="c1"># Runs the scene with the same screen (self.stdscr)</span>
+        <span class="n">new_scene</span><span class="o">.</span><span class="n">extract_obj</span><span class="p">(</span><span class="n">new_scene_obj</span><span class="p">)</span>  <span class="c1"># Loads the manager object</span>
+        <span class="k">if</span> <span class="n">run_scene</span><span class="p">:</span>
+            <span class="n">new_scene</span><span class="o">.</span><span class="n">on_enter</span><span class="p">()</span>  <span class="c1"># If you dont want the scene to run set run_scene to False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene_managers</span><span class="p">[</span><span class="n">scene_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_scene_obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scenes</span><span class="p">[</span><span class="n">scene_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_scene</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_scene</span> <span class="o">=</span> <span class="n">scene_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Set scene to </span><span class="si">{</span><span class="n">scene_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Debugging</span></div>
+</div>
+
+        
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Adam Worsnip.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

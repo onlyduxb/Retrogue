@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>managers_package.entity_manager &mdash; Retrogue 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=a6a68382" />
+      <link rel="stylesheet" type="text/css" href="../../_static/fonts.css?v=5583d106" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Retrogue
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Retrogue</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">managers_package.entity_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for managers_package.entity_manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Entity manager.&quot;&quot;&quot;</span>
+
+<span class="c1"># -- Imports --</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">generators_package.entity_generator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">DudEntity</span><span class="p">,</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">Player</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nn_package</span><span class="w"> </span><span class="kn">import</span> <span class="n">MovementNet</span>
+
+
+<div class="viewcode-block" id="EntityManager">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.entity_manager.EntityManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EntityManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Entity manager.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Entity manager is the parent class controlling the each entity present in a gamestate</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.model: MovementNet # Nueral network that governs the AI movement</span>
+<span class="sd">    self.enemy_count: int # The number of enemies in the current gamestate</span>
+<span class="sd">    self.player: Player # Player object</span>
+<span class="sd">    self.Agents: list[Agent] # List of enemy objects (length = self.enemy_count)</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    get_pos(Entity: Entity) -&gt; tuple[int, int] # Returns the position of a given entity</span>
+<span class="sd">    set_position(entity: Entity, x: int, y: int, map: list[list[str]]) -&gt; None # Sets the position of an entity and updates the map with its character.</span>
+<span class="sd">    randomise_positions(map: list[list[str]]) -&gt; None # Randomly places agents on the map in empty spaces</span>
+<span class="sd">    get_all_entity_chars() -&gt; list[str] # Returns a list of the all of the entity placeholder characters</span>
+<span class="sd">    get_all_agent_chars() -&gt; list[str] # Returns a list of only the agent characters</span>
+<span class="sd">    get_entity_at_pos(self, coordiantes, ignore=None) -&gt; Agent | dud_entity | Player # Returns the entity at a provided position, ignore parameter allows for a certain type to be removed from the search</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player</span><span class="p">:</span> <span class="n">Player</span><span class="p">,</span> <span class="n">enemy_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">enemy_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise entity manager.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">MovementNet</span><span class="p">()</span>  <span class="c1"># Gets the neural network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;nn_package/enemy_controller.pth&quot;</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># Loads a nueral network</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">enemy_count</span> <span class="o">=</span> <span class="n">enemy_count</span>  <span class="c1"># Enemy count</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">:</span> <span class="n">Player</span> <span class="o">=</span> <span class="n">player</span>  <span class="c1"># Player object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Agents</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Agent</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Agent</span><span class="p">(</span>
+                <span class="n">level</span><span class="o">=</span><span class="n">enemy_level</span><span class="p">,</span>
+                <span class="c1"># health=random.randint(1, 150),</span>
+                <span class="n">health</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                <span class="n">char</span><span class="o">=</span><span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">enemy_count</span><span class="p">)</span>
+        <span class="p">]</span>  <span class="c1"># List of all the agents</span>
+
+<div class="viewcode-block" id="EntityManager.get_pos">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.entity_manager.EntityManager.get_pos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity</span><span class="p">:</span> <span class="n">Entity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the position of a given entity.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">entity</span><span class="o">.</span><span class="n">pos</span></div>
+
+
+<div class="viewcode-block" id="EntityManager.randomise_positions">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.entity_manager.EntityManager.randomise_positions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">randomise_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">map</span><span class="p">,</span> <span class="n">player_position</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Randomly place agents on the map in empty spaces.&quot;&quot;&quot;</span>
+        <span class="n">agent_chars</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">char</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Agents</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Agents</span><span class="p">:</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">map</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot; / &quot;</span><span class="p">,</span> <span class="s2">&quot; # &quot;</span><span class="p">]</span>
+                    <span class="ow">and</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">player_position</span>
+                    <span class="ow">and</span> <span class="nb">map</span><span class="p">[</span><span class="n">y</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">agent_chars</span>
+                <span class="p">):</span>
+                    <span class="n">agent</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+                    <span class="k">break</span></div>
+
+
+<div class="viewcode-block" id="EntityManager.get_all_entity_chars">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.entity_manager.EntityManager.get_all_entity_chars">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_entity_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of the all of the entity placeholder characters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">char</span> <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Agents</span><span class="p">]</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_agent_chars</span><span class="p">()</span>
+            <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">char</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="EntityManager.get_all_agent_chars">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.entity_manager.EntityManager.get_all_agent_chars">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_all_agent_chars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of only the agent characters.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">char</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">&quot;⇖⇗⇘⇙⇚⇛⇑⇓&quot;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="EntityManager.get_entity_at_pos">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.entity_manager.EntityManager.get_entity_at_pos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_entity_at_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordiantes</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Agent</span> <span class="o">|</span> <span class="n">DudEntity</span> <span class="o">|</span> <span class="n">Player</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the entity at a provided position, ignore parameter allows for a certain type to be removed from the search.&quot;&quot;&quot;</span>
+        <span class="n">all_entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Agents</span> <span class="o">+</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ignore</span> <span class="o">==</span> <span class="s2">&quot;player&quot;</span><span class="p">:</span>
+            <span class="n">all_entities</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ignore</span> <span class="o">==</span> <span class="s2">&quot;agent&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Agents</span><span class="p">:</span>
+                <span class="n">all_entities</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">all_entities</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_pos</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span> <span class="o">==</span> <span class="n">coordiantes</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">entity</span>
+        <span class="k">return</span> <span class="n">DudEntity</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Adam Worsnip.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,861 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>generators_package.overworld_generation &mdash; Retrogue 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=a6a68382" />
+      <link rel="stylesheet" type="text/css" href="../../_static/fonts.css?v=5583d106" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Retrogue
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Retrogue</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">generators_package.overworld_generation</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for generators_package.overworld_generation</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Overworld generator.&quot;&quot;&quot;</span>
+
+<span class="c1"># -- Imports</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+
+
+<div class="viewcode-block" id="hash_function">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.hash_function">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">hash_function</span><span class="p">(</span><span class="n">coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Hash function for seed generation.&quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">**=</span> <span class="mi">2</span>
+    <span class="n">y</span> <span class="o">**=</span> <span class="mi">2</span>
+    <span class="n">x_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="n">y_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span>
+    <span class="n">x_half</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">x_len</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">y_half</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">y</span><span class="p">)[</span><span class="mi">0</span> <span class="p">:</span> <span class="n">y_len</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">x_half</span> <span class="o">+</span> <span class="n">y_half</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="poisson_disk_sampling">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.poisson_disk_sampling">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">poisson_disk_sampling</span><span class="p">(</span>
+    <span class="n">map_</span><span class="p">,</span>
+    <span class="n">map_size</span><span class="p">,</span>
+    <span class="n">POISSION_K_VALUE</span><span class="p">,</span>  <span class="c1"># noqa: N803</span>
+    <span class="n">POISSON_RADIUS</span><span class="p">,</span>  <span class="c1"># noqa: N803</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">)),</span>
+    <span class="n">debug_character</span><span class="o">=</span><span class="s1">&#39; x &#39;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use poisson disk sampling to generate a set of points where towns and dungeons can be created.&quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">hash_function</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span> <span class="c1"># Seed generated by hash function</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Generated points list</span>
+    <span class="n">active_points</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Active points list</span>
+    <span class="n">first_point</span> <span class="o">=</span> <span class="p">(</span><span class="n">map_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">map_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># First point at the center of the map</span>
+    <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_point</span><span class="p">)</span> <span class="c1"># Append the first point to the point array</span>
+    <span class="n">active_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">first_point</span><span class="p">)</span> <span class="c1"># Appened the first point</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_dist</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the distance between two points.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">p1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">p1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_candidate</span><span class="p">():</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a candidate for PDS.&quot;&quot;&quot;</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">hash_function</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span> <span class="c1"># Use the same seed</span>
+        <span class="n">random_point</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">active_points</span><span class="p">)</span> <span class="c1"># Choose a random point in the active points</span>
+        <span class="n">current_point_valid_candidates</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Number of valid &#39;candidates&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">POISSION_K_VALUE</span><span class="p">):</span> <span class="c1"># K value is the number </span>
+            <span class="n">valid</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="n">random_distance</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">POISSON_RADIUS</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">POISSON_RADIUS</span><span class="p">)</span> <span class="c1"># Select a random distance</span>
+                <span class="n">theta</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="c1"># Create a random angle</span>
+                <span class="n">random_candidate_position</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">random_point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">random_distance</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)),</span> <span class="c1"># Travel a random distance along the x direction</span>
+                    <span class="n">random_point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">random_distance</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)),</span> <span class="c1"># Travel a random distance along the y direction</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">random_candidate_position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">map_size</span> 
+                    <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">random_candidate_position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">map_size</span>
+                <span class="p">):</span> <span class="c1"># Bound safety</span>
+                    <span class="k">break</span>
+            <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">calculate_dist</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">random_candidate_position</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">POISSON_RADIUS</span><span class="p">:</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Point too close</span>
+            <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+                <span class="n">current_point_valid_candidates</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># Point marked as valid</span>
+                <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">random_candidate_position</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                        <span class="nb">int</span><span class="p">(</span><span class="n">random_candidate_position</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                    <span class="p">)</span> <span class="c1"># If the point is valid add to points</span>
+                <span class="p">)</span>
+                <span class="n">active_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random_candidate_position</span><span class="p">)</span> <span class="c1"># Add to active points</span>
+        <span class="k">if</span> <span class="n">current_point_valid_candidates</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">active_points</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">random_point</span><span class="p">)</span> <span class="c1"># If there is no more active points remove the generated points</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">active_points</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">generate_candidate</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+        <span class="n">map_</span><span class="p">[</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">debug_character</span> <span class="c1"># Marks all poi points with a debug character (default x)</span>
+    <span class="k">return</span> <span class="n">map_</span><span class="p">,</span> <span class="n">points</span></div>
+
+
+
+<div class="viewcode-block" id="Town">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Town</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Town.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Towns are complete with buildings including: Inns and Shops. Where items could be purchased. More to be added later.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.debugger: Debugger # Debugger</span>
+<span class="sd">    self.coordinates: tuple[int, int] # Coordinates of town</span>
+<span class="sd">    self.sizes: dict[str, int] # Sizes of towns with their names (Hamlet / village)</span>
+<span class="sd">    probability_town_size: list[float] # Probability of each town size</span>
+<span class="sd">    self.type: str # Type of town</span>
+<span class="sd">    self.POISSION_k_value: int # K value</span>
+<span class="sd">    self.POISSON_RADIUS: float # Radius</span>
+<span class="sd">    self.grass_char: str # Grass character</span>
+<span class="sd">    self.road_char: str # Road character</span>
+<span class="sd">    self.house_positions: list[tuple[int, int]] # Cooridinates of houses</span>
+<span class="sd">    self.town_layout: list[list[str]] # Layout of town</span>
+<span class="sd">    self.house_positions: dict[tuple[int, int], str] # Positions of buildings with the building type</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    get_house_positions(self) # Return the building positions.</span>
+<span class="sd">    get_road_pos(self) # Return the positions of the roads.</span>
+<span class="sd">    set_houses(self) # Set the positions of the buildings in towns.</span>
+<span class="sd">    get_adjacent_grass(self, pos) # Get the positions of grass chars adjacent to a position.</span>
+<span class="sd">    set_paths(self) # Create paths between houses.</span>
+<span class="sd">    print_town(self) # Print town.</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">debugger</span><span class="p">,</span>
+        <span class="n">coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">grass_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; . &quot;</span><span class="p">,</span>
+        <span class="n">road_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; = &quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise town.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span> <span class="o">=</span> <span class="n">debugger</span> <span class="c1"># Debugger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span> <span class="c1"># Coordinates of town</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Hamlet&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;Village&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}</span> <span class="c1"># Sizes of towns with their names (Hamlet / village)</span>
+
+        <span class="n">probability_town_size</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.75</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">]</span> <span class="c1"># Probability of each town size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">size</span> <span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="o">.</span><span class="n">keys</span><span class="p">()],</span> <span class="n">weights</span><span class="o">=</span><span class="n">probability_town_size</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span>
+        <span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Type of town</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">POISSION_k_value</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">POISSON_RADIUS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">]</span> <span class="o">/</span> <span class="mi">5</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span> <span class="o">=</span> <span class="n">grass_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">road_char</span> <span class="o">=</span> <span class="n">road_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">])]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">])</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span> <span class="o">=</span> <span class="n">poisson_disk_sampling</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">POISSION_K_VALUE</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">POISSON_RADIUS</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">debug_character</span><span class="o">=</span><span class="s1">&#39; t &#39;</span>
+        <span class="p">)</span>
+        <span class="c1"># Deduplicate house positions created by integer rounding in PDS</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">({(</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">building_positions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_paths</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_houses</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Town.get_house_positions">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town.get_house_positions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_house_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the building positions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span></div>
+
+
+<div class="viewcode-block" id="Town.get_road_pos">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town.get_road_pos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_road_pos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the positions of the roads.&quot;&quot;&quot;</span>
+        <span class="n">road_positions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row_index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">element_index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">element</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">road_char</span><span class="p">:</span>
+                    <span class="n">road_positions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row_index</span><span class="p">,</span> <span class="n">element_index</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">road_positions</span></div>
+
+
+<div class="viewcode-block" id="Town.set_houses">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town.set_houses">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_houses</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the positions of the buildings in towns.&quot;&quot;&quot;</span>
+        <span class="n">generator</span> <span class="o">=</span> <span class="n">OverworldHouseGeneration</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">house_pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span><span class="p">:</span>
+            <span class="n">house_char</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">generate_house</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">[</span><span class="n">house_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">house_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">house_char</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">building_positions</span><span class="p">[</span><span class="n">house_pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">house_char</span></div>
+
+
+<div class="viewcode-block" id="Town.get_adjacent_grass">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town.get_adjacent_grass">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_adjacent_grass</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a safe adjacent grass tile; fall back to original pos.&quot;&quot;&quot;</span>
+        <span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="ow">in</span> <span class="n">directions</span><span class="p">:</span>
+            <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span>
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span><span class="n">ny</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span><span class="p">:</span>
+                    <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">pos</span></div>
+
+
+<div class="viewcode-block" id="Town.set_paths">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town.set_paths">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create paths between houses.&quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">get_closest_house</span><span class="p">(</span><span class="n">start</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Get the closest house from some start house.&quot;&quot;&quot;</span>
+
+            <span class="k">def</span><span class="w"> </span><span class="nf">dist</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">finish</span><span class="p">):</span>
+<span class="w">                </span><span class="sd">&quot;&quot;&quot;Return the distance between two houses.&quot;&quot;&quot;</span>
+                <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">finish</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">finish</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="p">)</span>
+
+            <span class="n">min_dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+            <span class="n">closest</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">dist</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">house</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="n">min_dist</span> <span class="ow">and</span> <span class="n">s</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">min_dist</span> <span class="o">=</span> <span class="n">s</span>
+                    <span class="n">closest</span> <span class="o">=</span> <span class="n">house</span>
+            <span class="k">return</span> <span class="n">closest</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">bfs_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Use bfs to pathfind between two buildings to create a path.&quot;&quot;&quot;</span>
+            <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="n">start</span><span class="p">])</span>
+            <span class="n">visited</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">visited</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">directions</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+            <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">end</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">for</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="ow">in</span> <span class="n">directions</span><span class="p">:</span>
+                    <span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+                    <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">nx</span> <span class="o">&lt;</span> <span class="n">rows</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">ny</span> <span class="o">&lt;</span> <span class="n">cols</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">[</span><span class="n">nx</span><span class="p">][</span>
+                            <span class="n">ny</span>
+                        <span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span><span class="p">:</span>
+                            <span class="n">visited</span><span class="p">[(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+                            <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="n">end</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+
+            <span class="n">path</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">end</span>
+            <span class="k">while</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">visited</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">path</span>
+
+        <span class="n">paths_generated</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">house_positions</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_adjacent_grass</span><span class="p">(</span><span class="n">house</span><span class="p">)</span>
+            <span class="n">target_house</span> <span class="o">=</span> <span class="n">get_closest_house</span><span class="p">(</span><span class="n">house</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_adjacent_grass</span><span class="p">(</span><span class="n">target_house</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">start</span> <span class="ow">in</span> <span class="n">paths_generated</span><span class="p">:</span>
+                <span class="n">road</span> <span class="o">=</span> <span class="n">bfs_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+                <span class="n">paths_generated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+                <span class="n">paths_generated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+                <span class="c1"># Fallback Manhattan path if BFS fails</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">road</span><span class="p">:</span>
+                    <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">start</span>
+                    <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">end</span>
+                    <span class="n">fallback</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="c1"># horizontal first</span>
+                    <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">y1</span> <span class="o">&gt;</span> <span class="n">y0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">+</span> <span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span> <span class="c1"># type: ignore</span>
+                        <span class="n">fallback</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x0</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+                    <span class="c1"># vertical second</span>
+                    <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">x1</span> <span class="o">&gt;</span> <span class="n">x0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span> <span class="c1"># type: ignore</span>
+                        <span class="n">fallback</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y1</span><span class="p">))</span>
+                    <span class="n">road</span> <span class="o">=</span> <span class="n">fallback</span>
+
+                <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">road</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">[</span><span class="n">step</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">step</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">road_char</span></div>
+
+
+<div class="viewcode-block" id="Town.print_town">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.Town.print_town">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_town</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print town.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">town_layout</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">))</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="OverworldHouseGeneration">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldHouseGeneration">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OverworldHouseGeneration</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overworld house generation.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Generate houses for the overworld.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    self.empty_char: str # Empty character</span>
+<span class="sd">    self.wall_char: str # Wall character</span>
+<span class="sd">    self.door_char: str # Door character</span>
+<span class="sd">    self.npc_char: str # NPC character</span>
+<span class="sd">    self.bench_char: str # Bench character</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    generate_house(self) # Return a house type.</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">empty_char</span><span class="o">=</span><span class="s2">&quot; _ &quot;</span><span class="p">,</span>
+        <span class="n">wall_char</span><span class="o">=</span><span class="s2">&quot; # &quot;</span><span class="p">,</span>
+        <span class="n">door_char</span><span class="o">=</span><span class="s2">&quot; / &quot;</span><span class="p">,</span>
+        <span class="n">bench_char</span><span class="o">=</span><span class="s2">&quot; $ &quot;</span><span class="p">,</span>
+        <span class="n">npc_char</span><span class="o">=</span><span class="s2">&quot; X &quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise House generation.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">=</span> <span class="n">empty_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span> <span class="o">=</span> <span class="n">wall_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">door_char</span> <span class="o">=</span> <span class="n">door_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_char</span> <span class="o">=</span> <span class="n">npc_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span> <span class="o">=</span> <span class="n">bench_char</span>
+
+<div class="viewcode-block" id="OverworldHouseGeneration.generate_house">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldHouseGeneration.generate_house">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_house</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a house type.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="s2">&quot; I &quot;</span><span class="p">,</span> <span class="s2">&quot; S &quot;</span><span class="p">])</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="House">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.House">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">House</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;House.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Base class for houses.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.empty_char: str # Empty character</span>
+<span class="sd">    self.wall_char: str # Wall character</span>
+<span class="sd">    self.door_char: str # Door character</span>
+<span class="sd">    self.npc_char: str # NPC character</span>
+<span class="sd">    self.bench_char: str # Bench character</span>
+<span class="sd">    self.house_char: str # House char</span>
+<span class="sd">    self.layout: list[list[str]] # House layout</span>
+<span class="sd">    self.PLAYER: Player # Player object</span>
+<span class="sd">    self.player_pos: tuple[int, int] # Player position</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    place_player(self) # Place the player at the enterance of the building.</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">player</span><span class="p">,</span>
+        <span class="n">house_char</span><span class="o">=</span><span class="s2">&quot; H &quot;</span><span class="p">,</span>
+        <span class="n">empty_char</span><span class="o">=</span><span class="s2">&quot; _ &quot;</span><span class="p">,</span>
+        <span class="n">wall_char</span><span class="o">=</span><span class="s2">&quot; # &quot;</span><span class="p">,</span>
+        <span class="n">door_char</span><span class="o">=</span><span class="s2">&quot; / &quot;</span><span class="p">,</span>
+        <span class="n">bench_char</span><span class="o">=</span><span class="s2">&quot; $ &quot;</span><span class="p">,</span>
+        <span class="n">npc_char</span><span class="o">=</span><span class="s2">&quot; X &quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise house.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span> <span class="o">=</span> <span class="n">empty_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span> <span class="o">=</span> <span class="n">wall_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">door_char</span> <span class="o">=</span> <span class="n">door_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npc_char</span> <span class="o">=</span> <span class="n">npc_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span> <span class="o">=</span> <span class="n">bench_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">house_char</span> <span class="o">=</span> <span class="n">house_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PLAYER</span> <span class="o">=</span> <span class="n">player</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<div class="viewcode-block" id="House.place_player">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.House.place_player">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">place_player</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Place the player at the enterance of the building.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PLAYER</span><span class="o">.</span><span class="n">char</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="InnGenerator">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.InnGenerator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">InnGenerator</span><span class="p">(</span><span class="n">House</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Inn generator.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Generates an Inn.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.empty_char: str # Empty character</span>
+<span class="sd">    self.wall_char: str # Wall character</span>
+<span class="sd">    self.door_char: str # Door character</span>
+<span class="sd">    self.npc_char: str # NPC character</span>
+<span class="sd">    self.bench_char: str # Bench character</span>
+<span class="sd">    self.house_char: str # House char</span>
+<span class="sd">    self.layout: list[list[str]] # House layout</span>
+<span class="sd">    self.PLAYER: Player # Player object</span>
+<span class="sd">    self.player_pos: tuple[int, int] # Player position</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">player</span><span class="p">,</span>
+        <span class="n">house_char</span><span class="o">=</span><span class="s2">&quot; I &quot;</span><span class="p">,</span>
+        <span class="n">empty_char</span><span class="o">=</span><span class="s2">&quot; _ &quot;</span><span class="p">,</span>
+        <span class="n">wall_char</span><span class="o">=</span><span class="s2">&quot; # &quot;</span><span class="p">,</span>
+        <span class="n">door_char</span><span class="o">=</span><span class="s2">&quot; / &quot;</span><span class="p">,</span>
+        <span class="n">bench_char</span><span class="o">=</span><span class="s2">&quot; $ &quot;</span><span class="p">,</span>
+        <span class="n">npc_char</span><span class="o">=</span><span class="s2">&quot; X &quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise inn.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">player</span><span class="p">,</span> <span class="n">house_char</span><span class="p">,</span> <span class="n">empty_char</span><span class="p">,</span> <span class="n">wall_char</span><span class="p">,</span> <span class="n">door_char</span><span class="p">,</span> <span class="n">bench_char</span><span class="p">,</span> <span class="n">npc_char</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">npc_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">door_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">place_player</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="ShopGenerator">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.ShopGenerator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShopGenerator</span><span class="p">(</span><span class="n">House</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Shop generator.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Generates a shop.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.empty_char: str # Empty character</span>
+<span class="sd">    self.wall_char: str # Wall character</span>
+<span class="sd">    self.door_char: str # Door character</span>
+<span class="sd">    self.npc_char: str # NPC character</span>
+<span class="sd">    self.bench_char: str # Bench character</span>
+<span class="sd">    self.house_char: str # House char</span>
+<span class="sd">    self.layout: list[list[str]] # House layout</span>
+<span class="sd">    self.PLAYER: Player # Player object</span>
+<span class="sd">    self.player_pos: tuple[int, int] # Player position</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">player</span><span class="p">,</span>
+        <span class="n">house_char</span><span class="o">=</span><span class="s2">&quot; S &quot;</span><span class="p">,</span>
+        <span class="n">empty_char</span><span class="o">=</span><span class="s2">&quot; _ &quot;</span><span class="p">,</span>
+        <span class="n">wall_char</span><span class="o">=</span><span class="s2">&quot; # &quot;</span><span class="p">,</span>
+        <span class="n">door_char</span><span class="o">=</span><span class="s2">&quot; / &quot;</span><span class="p">,</span>
+        <span class="n">bench_char</span><span class="o">=</span><span class="s2">&quot; $ &quot;</span><span class="p">,</span>
+        <span class="n">npc_char</span><span class="o">=</span><span class="s2">&quot; X &quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise shop.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">player</span><span class="p">,</span> <span class="n">house_char</span><span class="p">,</span> <span class="n">empty_char</span><span class="p">,</span> <span class="n">wall_char</span><span class="p">,</span> <span class="n">door_char</span><span class="p">,</span> <span class="n">bench_char</span><span class="p">,</span> <span class="n">npc_char</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">npc_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bench_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">empty_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+            <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">door_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wall_char</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">place_player</span><span class="p">()</span></div>
+
+
+
+<span class="c1"># --- OVERWORLD ---</span>
+
+
+<div class="viewcode-block" id="OverworldGeneration">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OverworldGeneration</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overworld generator.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Generates the overworld.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.debugger: Debugger # Debugger</span>
+<span class="sd">    self.coordinates tuple[int, int] # Coordinates of the overwor;d</span>
+<span class="sd">    self.road_char: str # Road character</span>
+<span class="sd">    self.grass_char: str # Grass character</span>
+<span class="sd">    self.dungeon_char: str # Dungeon character</span>
+<span class="sd">    self.seed: int # Seed for randomisation consistency</span>
+<span class="sd">    self.map_size: int # Map size</span>
+<span class="sd">    self.map: list[list[str]] # Map list</span>
+<span class="sd">    self.POISSION_k_value: int: # K value</span>
+<span class="sd">    self.POISSON_RADIUS: float: # Radius</span>
+<span class="sd">    self.poi_info: dict[tuple[int, int], str] # Stores PoI info</span>
+<span class="sd">    self.building_info: dict[tuple[int, int], str] # Stores building info</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    generate_map(self) # Return the generated map.</span>
+<span class="sd">    get_poi_coordinates(self) # Return the poi coordinates.</span>
+<span class="sd">    get_poi_info(self) -&gt; dict[tuple[int, int], str] # Return the poi info.</span>
+<span class="sd">    get_building_info(self) # Return building info.</span>
+<span class="sd">    add_dungeon(self, coordinates) # Add a dungeon.</span>
+<span class="sd">    add_town(self, coordinates) # Add a town.</span>
+<span class="sd">    print_map(self) # Print the map.</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">debugger</span><span class="p">,</span>
+        <span class="n">coordinates</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">road_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; = &quot;</span><span class="p">,</span>
+        <span class="n">grass_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot; . &quot;</span><span class="p">,</span>
+        <span class="n">dungeon_char</span><span class="o">=</span><span class="s2">&quot; Δ &quot;</span><span class="p">,</span>
+        <span class="n">map_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise overworld generation.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span> <span class="o">=</span> <span class="n">debugger</span> <span class="c1"># Debugger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span> <span class="c1"># Coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">road_char</span> <span class="o">=</span> <span class="n">road_char</span> <span class="c1"># Road character</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span> <span class="o">=</span> <span class="n">grass_char</span> <span class="c1"># Grass character</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dungeon_char</span> <span class="o">=</span> <span class="n">dungeon_char</span> <span class="c1"># Dungeon character</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating overworld with coordinates </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># Debug statement</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">hash_function</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span> <span class="c1"># Hashes coordinates for seed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="o">=</span> <span class="n">map_size</span> <span class="c1"># Map size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_size</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_size</span><span class="p">)</span>
+        <span class="p">]</span> <span class="c1"># Map</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">POISSION_k_value</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">POISSON_RADIUS</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">poi_coordinates</span> <span class="o">=</span> <span class="n">poisson_disk_sampling</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">POISSION_k_value</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">POISSON_RADIUS</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">debug_character</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span>
+        <span class="p">)</span>
+        <span class="n">pois</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">add_dungeon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_town</span><span class="p">]</span>
+        <span class="n">probabilities</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poi_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">building_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">poi</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">poi_coordinates</span><span class="p">:</span>
+            <span class="n">add_poi</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">pois</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">probabilities</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">add_poi</span><span class="p">(</span><span class="n">coordinates</span><span class="o">=</span><span class="n">poi</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OverworldGeneration.generate_map">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.generate_map">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the generated map.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span></div>
+
+
+<div class="viewcode-block" id="OverworldGeneration.get_poi_coordinates">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.get_poi_coordinates">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_poi_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the poi coordinates.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poi_coordinates</span></div>
+
+
+<div class="viewcode-block" id="OverworldGeneration.get_poi_info">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.get_poi_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_poi_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the poi info.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poi_info</span></div>
+
+
+<div class="viewcode-block" id="OverworldGeneration.get_building_info">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.get_building_info">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_building_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return building info.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">building_info</span></div>
+
+
+<div class="viewcode-block" id="OverworldGeneration.add_dungeon">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.add_dungeon">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_dungeon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a dungeon.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating Dungeon at coordinates </span><span class="si">{</span><span class="n">coordinates</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dungeon_char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poi_info</span><span class="p">[</span><span class="n">coordinates</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">char</span></div>
+
+
+<div class="viewcode-block" id="OverworldGeneration.add_town">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.add_town">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_town</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a town.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating Town at coordinates </span><span class="si">{</span><span class="n">coordinates</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">char</span> <span class="o">=</span> <span class="s2">&quot; T &quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poi_info</span><span class="p">[</span><span class="n">coordinates</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">char</span>
+        <span class="n">town</span> <span class="o">=</span> <span class="n">Town</span><span class="p">(</span>
+            <span class="n">debugger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="p">,</span>
+            <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span><span class="p">,</span>
+            <span class="n">grass_char</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span><span class="p">,</span>
+            <span class="n">road_char</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">road_char</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">town</span><span class="o">.</span><span class="n">town_layout</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">ele</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">town</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="ow">and</span> <span class="n">town</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">ele</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">grass_char</span><span class="p">]:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">town</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span><span class="p">][</span><span class="n">town</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">ele</span>
+                        <span class="k">if</span> <span class="n">ele</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39; S &#39;</span><span class="p">,</span> <span class="s1">&#39; I &#39;</span><span class="p">]:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">building_info</span><span class="p">[(</span><span class="n">town</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">i</span><span class="p">,</span> <span class="n">town</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ele</span></div>
+
+
+<div class="viewcode-block" id="OverworldGeneration.print_map">
+<a class="viewcode-back" href="../../generators_package.html#generators_package.overworld_generation.OverworldGeneration.print_map">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Print the map.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">))</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Adam Worsnip.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

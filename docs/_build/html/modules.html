@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src &mdash; Retrogue 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=a6a68382" />
+      <link rel="stylesheet" type="text/css" href="_static/fonts.css?v=5583d106" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="generators_package package" href="generators_package.html" />
+    <link rel="prev" title="Retrogue documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Retrogue
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">src</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generators_package.html">generators_package package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html">graphics_package package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html">managers_package package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn_package.html">nn_package package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html">training module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Retrogue</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">src</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="src">
+<h1>src<a class="headerlink" href="#src" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generators_package.html">generators_package package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generators_package.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators_package.html#module-generators_package.entity_generator">generators_package.entity_generator module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Agent.get_char"><code class="docutils literal notranslate"><span class="pre">Agent.get_char()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.DudEntity"><code class="docutils literal notranslate"><span class="pre">DudEntity</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Entity.angle_diff"><code class="docutils literal notranslate"><span class="pre">Entity.angle_diff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Entity.deal_damage"><code class="docutils literal notranslate"><span class="pre">Entity.deal_damage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Entity.get_max_health"><code class="docutils literal notranslate"><span class="pre">Entity.get_max_health()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Entity.get_visible"><code class="docutils literal notranslate"><span class="pre">Entity.get_visible()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Player"><code class="docutils literal notranslate"><span class="pre">Player</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Player.get_char"><code class="docutils literal notranslate"><span class="pre">Player.get_char()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.entity_generator.Player.get_save_data"><code class="docutils literal notranslate"><span class="pre">Player.get_save_data()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generators_package.html#module-generators_package.overworld_generation">generators_package.overworld_generation module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.House"><code class="docutils literal notranslate"><span class="pre">House</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.House.place_player"><code class="docutils literal notranslate"><span class="pre">House.place_player()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.InnGenerator"><code class="docutils literal notranslate"><span class="pre">InnGenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.add_dungeon"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.add_dungeon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.add_town"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.add_town()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.generate_map"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.generate_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.get_building_info"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.get_building_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.get_poi_coordinates"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.get_poi_coordinates()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.get_poi_info"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.get_poi_info()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldGeneration.print_map"><code class="docutils literal notranslate"><span class="pre">OverworldGeneration.print_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldHouseGeneration"><code class="docutils literal notranslate"><span class="pre">OverworldHouseGeneration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.OverworldHouseGeneration.generate_house"><code class="docutils literal notranslate"><span class="pre">OverworldHouseGeneration.generate_house()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.ShopGenerator"><code class="docutils literal notranslate"><span class="pre">ShopGenerator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town"><code class="docutils literal notranslate"><span class="pre">Town</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town.get_adjacent_grass"><code class="docutils literal notranslate"><span class="pre">Town.get_adjacent_grass()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town.get_house_positions"><code class="docutils literal notranslate"><span class="pre">Town.get_house_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town.get_road_pos"><code class="docutils literal notranslate"><span class="pre">Town.get_road_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town.print_town"><code class="docutils literal notranslate"><span class="pre">Town.print_town()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town.set_houses"><code class="docutils literal notranslate"><span class="pre">Town.set_houses()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.Town.set_paths"><code class="docutils literal notranslate"><span class="pre">Town.set_paths()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.hash_function"><code class="docutils literal notranslate"><span class="pre">hash_function()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.overworld_generation.poisson_disk_sampling"><code class="docutils literal notranslate"><span class="pre">poisson_disk_sampling()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generators_package.html#module-generators_package.room_generator">generators_package.room_generator module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator"><code class="docutils literal notranslate"><span class="pre">RoomGenerator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.add_visited_list"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.add_visited_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.capture_3x3"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.capture_3x3()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.convert"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.convert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.count_empty"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.count_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.generate_dungeon"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.generate_dungeon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.get_wall"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.get_wall()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.hash_function"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.hash_function()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.print_map"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.print_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.set_door_positions"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.set_door_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.room_generator.RoomGenerator.valid_room"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.valid_room()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generators_package.html#module-generators_package">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Agent.get_char"><code class="docutils literal notranslate"><span class="pre">Agent.get_char()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.Entity"><code class="docutils literal notranslate"><span class="pre">Entity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Entity.angle_diff"><code class="docutils literal notranslate"><span class="pre">Entity.angle_diff()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Entity.deal_damage"><code class="docutils literal notranslate"><span class="pre">Entity.deal_damage()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Entity.get_max_health"><code class="docutils literal notranslate"><span class="pre">Entity.get_max_health()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Entity.get_visible"><code class="docutils literal notranslate"><span class="pre">Entity.get_visible()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.Player"><code class="docutils literal notranslate"><span class="pre">Player</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Player.get_char"><code class="docutils literal notranslate"><span class="pre">Player.get_char()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.Player.get_save_data"><code class="docutils literal notranslate"><span class="pre">Player.get_save_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator"><code class="docutils literal notranslate"><span class="pre">RoomGenerator</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.add_visited_list"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.add_visited_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.capture_3x3"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.capture_3x3()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.convert"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.convert()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.count_empty"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.count_empty()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.generate_dungeon"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.generate_dungeon()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.get_wall"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.get_wall()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.hash_function"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.hash_function()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.print_map"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.print_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.set_door_positions"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.set_door_positions()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="generators_package.html#generators_package.RoomGenerator.valid_room"><code class="docutils literal notranslate"><span class="pre">RoomGenerator.valid_room()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graphics_package.html">graphics_package package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#module-graphics_package.building_scene">graphics_package.building_scene module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.building_scene.BuildingScene"><code class="docutils literal notranslate"><span class="pre">BuildingScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.building_scene.BuildingScene.draw"><code class="docutils literal notranslate"><span class="pre">BuildingScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.building_scene.BuildingScene.extract_obj"><code class="docutils literal notranslate"><span class="pre">BuildingScene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.building_scene.BuildingScene.on_enter"><code class="docutils literal notranslate"><span class="pre">BuildingScene.on_enter()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#module-graphics_package.dungeon_scene">graphics_package.dungeon_scene module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene"><code class="docutils literal notranslate"><span class="pre">DungeonScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene.damage_colour"><code class="docutils literal notranslate"><span class="pre">DungeonScene.damage_colour()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene.draw"><code class="docutils literal notranslate"><span class="pre">DungeonScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene.draw_side_win"><code class="docutils literal notranslate"><span class="pre">DungeonScene.draw_side_win()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene.extract_obj"><code class="docutils literal notranslate"><span class="pre">DungeonScene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene.on_enter"><code class="docutils literal notranslate"><span class="pre">DungeonScene.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.dungeon_scene.DungeonScene.on_exit"><code class="docutils literal notranslate"><span class="pre">DungeonScene.on_exit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#module-graphics_package.menu_scene">graphics_package.menu_scene module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.menu_scene.MenuScene"><code class="docutils literal notranslate"><span class="pre">MenuScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.menu_scene.MenuScene.draw"><code class="docutils literal notranslate"><span class="pre">MenuScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.menu_scene.MenuScene.handle_input"><code class="docutils literal notranslate"><span class="pre">MenuScene.handle_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.menu_scene.MenuScene.on_enter"><code class="docutils literal notranslate"><span class="pre">MenuScene.on_enter()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#module-graphics_package.overworld_scene">graphics_package.overworld_scene module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.overworld_scene.OverworldScene"><code class="docutils literal notranslate"><span class="pre">OverworldScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.overworld_scene.OverworldScene.draw"><code class="docutils literal notranslate"><span class="pre">OverworldScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.overworld_scene.OverworldScene.draw_side_win"><code class="docutils literal notranslate"><span class="pre">OverworldScene.draw_side_win()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.overworld_scene.OverworldScene.extract_obj"><code class="docutils literal notranslate"><span class="pre">OverworldScene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.overworld_scene.OverworldScene.on_enter"><code class="docutils literal notranslate"><span class="pre">OverworldScene.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.overworld_scene.OverworldScene.update_map"><code class="docutils literal notranslate"><span class="pre">OverworldScene.update_map()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#module-graphics_package.scene">graphics_package.scene module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene"><code class="docutils literal notranslate"><span class="pre">Scene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.add_text_bottom"><code class="docutils literal notranslate"><span class="pre">Scene.add_text_bottom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.change_text"><code class="docutils literal notranslate"><span class="pre">Scene.change_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.draw"><code class="docutils literal notranslate"><span class="pre">Scene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.extract_obj"><code class="docutils literal notranslate"><span class="pre">Scene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.get_class_name"><code class="docutils literal notranslate"><span class="pre">Scene.get_class_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.handle_input"><code class="docutils literal notranslate"><span class="pre">Scene.handle_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.on_enter"><code class="docutils literal notranslate"><span class="pre">Scene.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.scene.Scene.on_exit"><code class="docutils literal notranslate"><span class="pre">Scene.on_exit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphics_package.html#module-graphics_package">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.BuildingScene"><code class="docutils literal notranslate"><span class="pre">BuildingScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.BuildingScene.draw"><code class="docutils literal notranslate"><span class="pre">BuildingScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.BuildingScene.extract_obj"><code class="docutils literal notranslate"><span class="pre">BuildingScene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.BuildingScene.on_enter"><code class="docutils literal notranslate"><span class="pre">BuildingScene.on_enter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene"><code class="docutils literal notranslate"><span class="pre">DungeonScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene.damage_colour"><code class="docutils literal notranslate"><span class="pre">DungeonScene.damage_colour()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene.draw"><code class="docutils literal notranslate"><span class="pre">DungeonScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene.draw_side_win"><code class="docutils literal notranslate"><span class="pre">DungeonScene.draw_side_win()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene.extract_obj"><code class="docutils literal notranslate"><span class="pre">DungeonScene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene.on_enter"><code class="docutils literal notranslate"><span class="pre">DungeonScene.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.DungeonScene.on_exit"><code class="docutils literal notranslate"><span class="pre">DungeonScene.on_exit()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.MenuScene"><code class="docutils literal notranslate"><span class="pre">MenuScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.MenuScene.draw"><code class="docutils literal notranslate"><span class="pre">MenuScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.MenuScene.handle_input"><code class="docutils literal notranslate"><span class="pre">MenuScene.handle_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.MenuScene.on_enter"><code class="docutils literal notranslate"><span class="pre">MenuScene.on_enter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.OverworldScene"><code class="docutils literal notranslate"><span class="pre">OverworldScene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.OverworldScene.draw"><code class="docutils literal notranslate"><span class="pre">OverworldScene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.OverworldScene.draw_side_win"><code class="docutils literal notranslate"><span class="pre">OverworldScene.draw_side_win()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.OverworldScene.extract_obj"><code class="docutils literal notranslate"><span class="pre">OverworldScene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.OverworldScene.on_enter"><code class="docutils literal notranslate"><span class="pre">OverworldScene.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.OverworldScene.update_map"><code class="docutils literal notranslate"><span class="pre">OverworldScene.update_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graphics_package.html#graphics_package.Scene"><code class="docutils literal notranslate"><span class="pre">Scene</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.add_text_bottom"><code class="docutils literal notranslate"><span class="pre">Scene.add_text_bottom()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.change_text"><code class="docutils literal notranslate"><span class="pre">Scene.change_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.draw"><code class="docutils literal notranslate"><span class="pre">Scene.draw()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.extract_obj"><code class="docutils literal notranslate"><span class="pre">Scene.extract_obj()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.get_class_name"><code class="docutils literal notranslate"><span class="pre">Scene.get_class_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.handle_input"><code class="docutils literal notranslate"><span class="pre">Scene.handle_input()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.on_enter"><code class="docutils literal notranslate"><span class="pre">Scene.on_enter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphics_package.html#graphics_package.Scene.on_exit"><code class="docutils literal notranslate"><span class="pre">Scene.on_exit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.clear"><code class="docutils literal notranslate"><span class="pre">clear()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.get_last_edited_times"><code class="docutils literal notranslate"><span class="pre">get_last_edited_times()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html#main.launcher"><code class="docutils literal notranslate"><span class="pre">launcher()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="managers_package.html">managers_package package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.building_manager">managers_package.building_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.building_manager.Inn"><code class="docutils literal notranslate"><span class="pre">Inn</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.building_manager.Inn.move_player"><code class="docutils literal notranslate"><span class="pre">Inn.move_player()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.building_manager.Shop"><code class="docutils literal notranslate"><span class="pre">Shop</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.building_manager.Shop.move_player"><code class="docutils literal notranslate"><span class="pre">Shop.move_player()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.debug_manager">managers_package.debug_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.debug_manager.Debugger"><code class="docutils literal notranslate"><span class="pre">Debugger</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.debug_manager.Debugger.write"><code class="docutils literal notranslate"><span class="pre">Debugger.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.debug_manager.Debugger.write_map"><code class="docutils literal notranslate"><span class="pre">Debugger.write_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.debug_manager.get_caller_class"><code class="docutils literal notranslate"><span class="pre">get_caller_class()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.director">managers_package.director module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.director.Director"><code class="docutils literal notranslate"><span class="pre">Director</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.director.Director.new_scene"><code class="docutils literal notranslate"><span class="pre">Director.new_scene()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.director.Director.run"><code class="docutils literal notranslate"><span class="pre">Director.run()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.dungeon_manager">managers_package.dungeon_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.dungeon_manager.DungeonManager"><code class="docutils literal notranslate"><span class="pre">DungeonManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.dungeon_manager.DungeonManager.move_player"><code class="docutils literal notranslate"><span class="pre">DungeonManager.move_player()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.dungeon_manager.DungeonManager.start_dungeon"><code class="docutils literal notranslate"><span class="pre">DungeonManager.start_dungeon()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.dungeon_manager.RoomGraph"><code class="docutils literal notranslate"><span class="pre">RoomGraph</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.entity_manager">managers_package.entity_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.entity_manager.EntityManager"><code class="docutils literal notranslate"><span class="pre">EntityManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.entity_manager.EntityManager.get_all_agent_chars"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_all_agent_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.entity_manager.EntityManager.get_all_entity_chars"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_all_entity_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.entity_manager.EntityManager.get_entity_at_pos"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_entity_at_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.entity_manager.EntityManager.get_pos"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.entity_manager.EntityManager.randomise_positions"><code class="docutils literal notranslate"><span class="pre">EntityManager.randomise_positions()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.menu_manager">managers_package.menu_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.menu_manager.MenuManager"><code class="docutils literal notranslate"><span class="pre">MenuManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.menu_manager.MenuManager.select_option"><code class="docutils literal notranslate"><span class="pre">MenuManager.select_option()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.overworld_manager">managers_package.overworld_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager"><code class="docutils literal notranslate"><span class="pre">OverworldManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.activate_building"><code class="docutils literal notranslate"><span class="pre">OverworldManager.activate_building()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.generate_centres"><code class="docutils literal notranslate"><span class="pre">OverworldManager.generate_centres()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.generate_minimap"><code class="docutils literal notranslate"><span class="pre">OverworldManager.generate_minimap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.get_save_data"><code class="docutils literal notranslate"><span class="pre">OverworldManager.get_save_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.get_square"><code class="docutils literal notranslate"><span class="pre">OverworldManager.get_square()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.get_visible_window"><code class="docutils literal notranslate"><span class="pre">OverworldManager.get_visible_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.overworld_manager.OverworldManager.move_player"><code class="docutils literal notranslate"><span class="pre">OverworldManager.move_player()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.room_manager">managers_package.room_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.room_manager.Exit"><code class="docutils literal notranslate"><span class="pre">Exit</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.Exit.activate_room"><code class="docutils literal notranslate"><span class="pre">Exit.activate_room()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager"><code class="docutils literal notranslate"><span class="pre">RoomManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.activate_room"><code class="docutils literal notranslate"><span class="pre">RoomManager.activate_room()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.add_next_room"><code class="docutils literal notranslate"><span class="pre">RoomManager.add_next_room()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.bresenham"><code class="docutils literal notranslate"><span class="pre">RoomManager.bresenham()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.door_pos"><code class="docutils literal notranslate"><span class="pre">RoomManager.door_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.generate_fov_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.generate_fov_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.generate_heat_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.generate_heat_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.get_agent_movement"><code class="docutils literal notranslate"><span class="pre">RoomManager.get_agent_movement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.get_sound_window"><code class="docutils literal notranslate"><span class="pre">RoomManager.get_sound_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.get_viewport"><code class="docutils literal notranslate"><span class="pre">RoomManager.get_viewport()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.kill_footsteps"><code class="docutils literal notranslate"><span class="pre">RoomManager.kill_footsteps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.move_agents"><code class="docutils literal notranslate"><span class="pre">RoomManager.move_agents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.move_entity"><code class="docutils literal notranslate"><span class="pre">RoomManager.move_entity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.reset_episode"><code class="docutils literal notranslate"><span class="pre">RoomManager.reset_episode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.start_footstep_timer"><code class="docutils literal notranslate"><span class="pre">RoomManager.start_footstep_timer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.start_hit_timer"><code class="docutils literal notranslate"><span class="pre">RoomManager.start_hit_timer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.update_entity_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.update_entity_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.room_manager.RoomManager.zero_heat_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.zero_heat_map()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.save_manager">managers_package.save_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.save_manager.load_game"><code class="docutils literal notranslate"><span class="pre">load_game()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.save_manager.save_game"><code class="docutils literal notranslate"><span class="pre">save_game()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.sound_manager">managers_package.sound_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.sound_manager.play_footstep"><code class="docutils literal notranslate"><span class="pre">play_footstep()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package.weapons_manager">managers_package.weapons_manager module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.weapons_manager.Weapon"><code class="docutils literal notranslate"><span class="pre">Weapon</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.weapons_manager.Weapon.get_damage"><code class="docutils literal notranslate"><span class="pre">Weapon.get_damage()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="managers_package.html#module-managers_package">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.Debugger"><code class="docutils literal notranslate"><span class="pre">Debugger</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.Debugger.write"><code class="docutils literal notranslate"><span class="pre">Debugger.write()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.Debugger.write_map"><code class="docutils literal notranslate"><span class="pre">Debugger.write_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.DungeonManager"><code class="docutils literal notranslate"><span class="pre">DungeonManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.DungeonManager.move_player"><code class="docutils literal notranslate"><span class="pre">DungeonManager.move_player()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.DungeonManager.start_dungeon"><code class="docutils literal notranslate"><span class="pre">DungeonManager.start_dungeon()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.EntityManager"><code class="docutils literal notranslate"><span class="pre">EntityManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.EntityManager.get_all_agent_chars"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_all_agent_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.EntityManager.get_all_entity_chars"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_all_entity_chars()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.EntityManager.get_entity_at_pos"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_entity_at_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.EntityManager.get_pos"><code class="docutils literal notranslate"><span class="pre">EntityManager.get_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.EntityManager.randomise_positions"><code class="docutils literal notranslate"><span class="pre">EntityManager.randomise_positions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.MenuManager"><code class="docutils literal notranslate"><span class="pre">MenuManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.MenuManager.select_option"><code class="docutils literal notranslate"><span class="pre">MenuManager.select_option()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager"><code class="docutils literal notranslate"><span class="pre">OverworldManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.activate_building"><code class="docutils literal notranslate"><span class="pre">OverworldManager.activate_building()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.generate_centres"><code class="docutils literal notranslate"><span class="pre">OverworldManager.generate_centres()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.generate_minimap"><code class="docutils literal notranslate"><span class="pre">OverworldManager.generate_minimap()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.get_save_data"><code class="docutils literal notranslate"><span class="pre">OverworldManager.get_save_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.get_square"><code class="docutils literal notranslate"><span class="pre">OverworldManager.get_square()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.get_visible_window"><code class="docutils literal notranslate"><span class="pre">OverworldManager.get_visible_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.OverworldManager.move_player"><code class="docutils literal notranslate"><span class="pre">OverworldManager.move_player()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.RoomManager"><code class="docutils literal notranslate"><span class="pre">RoomManager</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.activate_room"><code class="docutils literal notranslate"><span class="pre">RoomManager.activate_room()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.add_next_room"><code class="docutils literal notranslate"><span class="pre">RoomManager.add_next_room()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.bresenham"><code class="docutils literal notranslate"><span class="pre">RoomManager.bresenham()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.door_pos"><code class="docutils literal notranslate"><span class="pre">RoomManager.door_pos()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.generate_fov_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.generate_fov_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.generate_heat_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.generate_heat_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.get_agent_movement"><code class="docutils literal notranslate"><span class="pre">RoomManager.get_agent_movement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.get_sound_window"><code class="docutils literal notranslate"><span class="pre">RoomManager.get_sound_window()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.get_viewport"><code class="docutils literal notranslate"><span class="pre">RoomManager.get_viewport()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.kill_footsteps"><code class="docutils literal notranslate"><span class="pre">RoomManager.kill_footsteps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.move_agents"><code class="docutils literal notranslate"><span class="pre">RoomManager.move_agents()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.move_entity"><code class="docutils literal notranslate"><span class="pre">RoomManager.move_entity()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.reset_episode"><code class="docutils literal notranslate"><span class="pre">RoomManager.reset_episode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.start_footstep_timer"><code class="docutils literal notranslate"><span class="pre">RoomManager.start_footstep_timer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.start_hit_timer"><code class="docutils literal notranslate"><span class="pre">RoomManager.start_hit_timer()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.update_entity_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.update_entity_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="managers_package.html#managers_package.RoomManager.zero_heat_map"><code class="docutils literal notranslate"><span class="pre">RoomManager.zero_heat_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.load_game"><code class="docutils literal notranslate"><span class="pre">load_game()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="managers_package.html#managers_package.save_game"><code class="docutils literal notranslate"><span class="pre">save_game()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nn_package.html">nn_package package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nn_package.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nn_package.html#module-nn_package.encoder">nn_package.encoder module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encoder.encode_agent_health"><code class="docutils literal notranslate"><span class="pre">encode_agent_health()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encoder.encode_allied_agent_count"><code class="docutils literal notranslate"><span class="pre">encode_allied_agent_count()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encoder.encode_inputs"><code class="docutils literal notranslate"><span class="pre">encode_inputs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encoder.encode_level_diff"><code class="docutils literal notranslate"><span class="pre">encode_level_diff()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encoder.encode_player_visibility"><code class="docutils literal notranslate"><span class="pre">encode_player_visibility()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encoder.encode_sound_grid"><code class="docutils literal notranslate"><span class="pre">encode_sound_grid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nn_package.html#module-nn_package.model">nn_package.model module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.model.MovementNet"><code class="docutils literal notranslate"><span class="pre">MovementNet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nn_package.html#nn_package.model.MovementNet.forward"><code class="docutils literal notranslate"><span class="pre">MovementNet.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nn_package.html#module-nn_package">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.MovementNet"><code class="docutils literal notranslate"><span class="pre">MovementNet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="nn_package.html#nn_package.MovementNet.forward"><code class="docutils literal notranslate"><span class="pre">MovementNet.forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nn_package.html#nn_package.encode_inputs"><code class="docutils literal notranslate"><span class="pre">encode_inputs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">setup module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">training module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training.html#training.score"><code class="docutils literal notranslate"><span class="pre">score()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html#training.test_model"><code class="docutils literal notranslate"><span class="pre">test_model()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html#training.train_model"><code class="docutils literal notranslate"><span class="pre">train_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Retrogue documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generators_package.html" class="btn btn-neutral float-right" title="generators_package package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Adam Worsnip.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

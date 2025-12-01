@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>managers_package.overworld_manager &mdash; Retrogue 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=a6a68382" />
+      <link rel="stylesheet" type="text/css" href="../../_static/fonts.css?v=5583d106" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Retrogue
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">src</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Retrogue</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">managers_package.overworld_manager</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for managers_package.overworld_manager</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Overworld manager.&quot;&quot;&quot;</span>
+
+<span class="c1"># -- Imports --</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">generators_package.entity_generator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Player</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">generators_package.overworld_generation</span><span class="w"> </span><span class="kn">import</span> <span class="n">OverworldGeneration</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">managers_package.building_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inn</span><span class="p">,</span> <span class="n">Shop</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">managers_package.dungeon_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">DungeonManager</span>
+
+
+<div class="viewcode-block" id="OverworldManager">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OverworldManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Overworld manager.</span>
+
+<span class="sd">    ## Description</span>
+<span class="sd">    Overworld manager applies game logic from director and then returns an action back to the director for the next scene.</span>
+<span class="sd">    ## Attributes</span>
+<span class="sd">    ```</span>
+<span class="sd">    self.player = Player # Player object</span>
+<span class="sd">    self.debugger: Debugger # Debugger</span>
+<span class="sd">    self.map_size: int</span>
+<span class="sd">    self.coordinates: tuple[int, int] # Coordinates for the overworld, used for hashing to generate a seed for the overworld</span>
+<span class="sd">    self.overworld_generator: Overworld_Generation # Generator for the overworld</span>
+<span class="sd">    ```</span>
+<span class="sd">    ## Methods</span>
+<span class="sd">    ```</span>
+<span class="sd">    # -- Minimap --</span>
+<span class="sd">    generate_minimap(grid_divisions: int) -&gt; list[list[str]] # Generates a minimap</span>
+<span class="sd">    generate_centres(self, grid_divisions=10 # Generates the centres of each one of the grid divisions</span>
+<span class="sd">    get_square(self, center, size) # Return a list of coordinates covering a square of side &#39;size&#39; centered on &#39;center&#39;. &#39;size&#39; is the full side length (integer &gt;= 1). Works correctly for even or odd sizes.</span>
+
+<span class="sd">    # -- Player --</span>
+<span class="sd">    get_visible_window(self) # Retruns a 5x5 view used to display what the player can see.</span>
+<span class="sd">    move_player(self, vector) # Moves the player with validation in the overworld by a provided vector</span>
+
+<span class="sd">    # -- Building activation --</span>
+<span class="sd">    activate_building(self, building: Shop | Inn) # Sends activation action to the director</span>
+
+<span class="sd">    # -- Save data --</span>
+<span class="sd">    get_save_data(self) # Returns the save data of the overworld</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">player</span><span class="p">:</span> <span class="n">Player</span><span class="p">,</span>
+        <span class="n">debugger</span><span class="p">,</span>
+        <span class="n">map_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
+        <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">),</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)),</span>
+        <span class="n">player_pos</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initilise overworld manager.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player</span> <span class="o">=</span> <span class="n">player</span>  <span class="c1"># Player object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span> <span class="o">=</span> <span class="n">debugger</span>  <span class="c1"># Debugger</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="o">=</span> <span class="n">map_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>  <span class="c1"># Coordinates for the overworld, used for hashing to generate a seed for the overworld</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span> <span class="o">=</span> <span class="n">OverworldGeneration</span><span class="p">(</span>
+            <span class="n">debugger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="p">,</span>
+            <span class="n">map_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">map_size</span><span class="p">,</span>
+            <span class="n">coordinates</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span>
+        <span class="p">)</span>  <span class="c1"># Generator for the overworld</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dungeon_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">dungeon_char</span>  <span class="c1"># Dungeon char</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">generate_map</span><span class="p">()</span>
+        <span class="p">)</span>  <span class="c1"># Generates map</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">player_pos</span> <span class="o">==</span> <span class="kc">None</span>
+        <span class="p">):</span>  <span class="c1"># If there is no passed player position assign the player to a random position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Otherwise set the player to the provided position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span> <span class="o">=</span> <span class="n">player_pos</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">poi_coordinates</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">get_poi_coordinates</span><span class="p">()</span>
+        <span class="p">)</span>  <span class="c1"># Gets the poi cooridnates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poi_dict</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">get_poi_info</span><span class="p">()</span>
+        <span class="p">)</span>  <span class="c1"># Get which pois are at which coordinates</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dungeon_manager_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># All dungeons with their associated managers</span>
+
+        <span class="k">for</span> <span class="n">poi_coord</span><span class="p">,</span> <span class="n">poi_type</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">poi_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">poi_type</span> <span class="o">==</span> <span class="s2">&quot; Δ &quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dungeon_manager_dict</span><span class="p">[</span><span class="n">poi_coord</span><span class="p">]</span> <span class="o">=</span> <span class="n">DungeonManager</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span>
+                <span class="p">)</span>  <span class="c1"># Assings a new dungeon manager to a point</span>
+
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dungeon_char</span><span class="p">,</span>
+                <span class="s2">&quot; S &quot;</span><span class="p">,</span>
+                <span class="s2">&quot; I &quot;</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">generate_map</span><span class="p">()</span>  <span class="c1"># Genrates the map</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_pos_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">char</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">buildings_dungeons</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># All buildings and dungeons</span>
+
+        <span class="k">for</span> <span class="n">coord</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">poi_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s2">&quot; T &quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buildings_dungeons</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="n">building_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">get_building_info</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">coord</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">building_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">buildings_dungeons</span><span class="p">[</span><span class="n">coord</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># -- Minimap --</span>
+
+<div class="viewcode-block" id="OverworldManager.generate_minimap">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.generate_minimap">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_minimap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_divisions</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the minimap.&quot;&quot;&quot;</span>
+        <span class="n">poi_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">overworld_generator</span><span class="o">.</span><span class="n">get_poi_info</span><span class="p">()</span>  <span class="c1"># Gets the POI information</span>
+        <span class="n">minimap</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Initlise the minimap</span>
+        <span class="n">centres</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_centres</span><span class="p">(</span>
+            <span class="n">grid_divisions</span>
+        <span class="p">)</span>  <span class="c1"># Generates the centres of each one of the grid divisions</span>
+        <span class="n">cell_h</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="o">//</span> <span class="n">grid_divisions</span><span class="p">)</span>  <span class="c1"># Grid height</span>
+        <span class="k">for</span> <span class="n">centre_row</span> <span class="ow">in</span> <span class="n">centres</span><span class="p">:</span>
+            <span class="n">new_row</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">centre_row</span><span class="p">:</span>  <span class="c1"># Checks to find out what exists within each grid</span>
+                <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">square</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_square</span><span class="p">(</span>
+                    <span class="n">center</span><span class="p">,</span> <span class="n">cell_h</span>
+                <span class="p">)</span>  <span class="c1"># Creates a square from each division</span>
+                <span class="k">for</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">square</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">coordinate</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span>
+                    <span class="p">):</span>  <span class="c1"># If the player is in a square set the minimap at that position to show a &#39;P&#39;</span>
+                        <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">)</span>
+                        <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>  <span class="c1"># Checks to see what poi may exist within this area</span>
+                    <span class="k">for</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">square</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">coordinate</span> <span class="ow">in</span> <span class="n">poi_info</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                            <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">poi_info</span><span class="p">[</span><span class="n">coordinate</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>  <span class="c1"># Else just assign it as empty</span>
+                    <span class="n">new_row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">minimap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">minimap</span>  <span class="c1"># Returns the minimap</span></div>
+
+
+<div class="viewcode-block" id="OverworldManager.generate_centres">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.generate_centres">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_centres</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_divisions</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the centres of each one of the grid divisions.&quot;&quot;&quot;</span>
+        <span class="n">centres</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cell_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="o">//</span> <span class="n">grid_divisions</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_divisions</span><span class="p">):</span>
+            <span class="n">row_centres</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">grid_divisions</span><span class="p">):</span>
+                <span class="n">cy</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">row</span> <span class="o">*</span> <span class="n">cell_h</span><span class="p">)</span> <span class="o">+</span> <span class="n">cell_h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="n">cx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">col</span> <span class="o">*</span> <span class="n">cell_h</span><span class="p">)</span> <span class="o">+</span> <span class="n">cell_h</span> <span class="o">//</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="n">row_centres</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">cy</span><span class="p">,</span> <span class="n">cx</span><span class="p">))</span>
+            <span class="n">centres</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_centres</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">centres</span></div>
+
+
+<div class="viewcode-block" id="OverworldManager.get_square">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.get_square">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_square</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of coordinates covering a square of side &#39;size&#39; centered on &#39;center&#39;.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="n">cy</span><span class="p">,</span> <span class="n">cx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">half</span> <span class="o">=</span> <span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">start_y</span> <span class="o">=</span> <span class="n">cy</span> <span class="o">-</span> <span class="n">half</span>
+        <span class="n">start_x</span> <span class="o">=</span> <span class="n">cx</span> <span class="o">-</span> <span class="n">half</span>
+
+        <span class="n">start_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_y</span><span class="p">)</span>
+        <span class="n">start_x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_x</span><span class="p">)</span>
+        <span class="n">end_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">),</span> <span class="n">start_y</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span>
+        <span class="n">end_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">start_x</span> <span class="o">+</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="n">square</span> <span class="o">=</span> <span class="p">[(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_y</span><span class="p">,</span> <span class="n">end_y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_x</span><span class="p">,</span> <span class="n">end_x</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">square</span></div>
+
+
+    <span class="c1"># -- Player --</span>
+
+<div class="viewcode-block" id="OverworldManager.get_visible_window">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.get_visible_window">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_visible_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retruns a 5x5 view used to display what the player can see.&quot;&quot;&quot;</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">desired_view_size</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="k">if</span> <span class="n">desired_view_size</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">desired_view_size</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">half</span> <span class="o">=</span> <span class="p">(</span><span class="n">desired_view_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">view_size</span> <span class="o">=</span> <span class="n">half</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">view_window</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot; . &quot;</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">view_size</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">view_size</span><span class="p">)]</span>
+        <span class="n">py</span><span class="p">,</span> <span class="n">px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span>
+        <span class="k">for</span> <span class="n">dy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">half</span><span class="p">,</span> <span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">half</span><span class="p">,</span> <span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">map_y</span> <span class="o">=</span> <span class="n">py</span> <span class="o">+</span> <span class="n">dy</span>
+                <span class="n">map_x</span> <span class="o">=</span> <span class="n">px</span> <span class="o">+</span> <span class="n">dx</span>
+                <span class="n">win_y</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">+</span> <span class="n">half</span>
+                <span class="n">win_x</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">+</span> <span class="n">half</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">map_y</span> <span class="o">&lt;</span> <span class="n">height</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">map_x</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">:</span>
+                    <span class="n">view_window</span><span class="p">[</span><span class="n">win_y</span><span class="p">][</span><span class="n">win_x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">map_y</span><span class="p">][</span><span class="n">map_x</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">view_window</span><span class="p">[</span><span class="n">win_y</span><span class="p">][</span><span class="n">win_x</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;   &quot;</span>
+        <span class="n">view_window</span><span class="p">[</span><span class="n">half</span><span class="p">][</span><span class="n">half</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; P &quot;</span>
+        <span class="k">return</span> <span class="n">view_window</span></div>
+
+
+<div class="viewcode-block" id="OverworldManager.move_player">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.move_player">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">move_player</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Move the player with validation in the overworld by a provided vector.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">vector</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>  <span class="c1"># If there is no vector just set the vector to be stationary (0,0)</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span>
+            <span class="mi">1</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map</span>
+        <span class="p">):</span>  <span class="c1"># Check that the player is moving within the bounds of the map</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generate_minimap</span><span class="p">()</span>  <span class="c1"># Genrates a minimap</span>
+            <span class="n">last_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span>  <span class="c1"># Stores the current position of the player</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos_char</span>  <span class="c1"># Sets the old position to be the old character</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">vector</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">)</span>  <span class="c1"># Sets the player position to be the new position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">player_pos_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">]</span>  <span class="c1"># Stores the character below the player character</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">char</span>  <span class="c1"># Sets the new position to be the player character</span>
+
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">buildings_dungeons</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="p">):</span>  <span class="c1"># Checks to see if the player is attempting to enter a POI</span>
+                <span class="n">building_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buildings_dungeons</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span>
+                <span class="p">]</span>  <span class="c1"># Gets the character of the building</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">]</span> <span class="o">=</span> <span class="n">building_char</span>  <span class="c1"># To prevent the player from overwriting the building character rewrite it</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span> <span class="o">=</span> <span class="n">last_pos</span>  <span class="c1"># Gets the last position of the player before they entered the building</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">player_pos_char</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+
+                <span class="k">if</span> <span class="n">building_char</span> <span class="o">==</span> <span class="s2">&quot; Δ &quot;</span><span class="p">:</span>  <span class="c1"># Dungeon</span>
+                    <span class="k">return</span> <span class="p">{</span>
+                        <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;enter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;next_scene&quot;</span><span class="p">:</span> <span class="s2">&quot;dungeon&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">DungeonManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">debugger</span><span class="p">),</span>
+                        <span class="s2">&quot;pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">,</span>
+                    <span class="p">}</span>  <span class="c1"># Returns action to director</span>
+                <span class="k">elif</span> <span class="n">building_char</span> <span class="o">==</span> <span class="s2">&quot; S &quot;</span><span class="p">:</span>  <span class="c1"># Shop</span>
+                    <span class="k">return</span> <span class="p">{</span>
+                        <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;enter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;next_scene&quot;</span><span class="p">:</span> <span class="s2">&quot;shop&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">Shop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">),</span>
+                        <span class="s2">&quot;pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">,</span>
+                    <span class="p">}</span>  <span class="c1"># Returns action to director</span>
+                <span class="k">elif</span> <span class="n">building_char</span> <span class="o">==</span> <span class="s2">&quot; I &quot;</span><span class="p">:</span>  <span class="c1"># Inn</span>
+                    <span class="k">return</span> <span class="p">{</span>
+                        <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;enter&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;next_scene&quot;</span><span class="p">:</span> <span class="s2">&quot;inn&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;obj&quot;</span><span class="p">:</span> <span class="n">Inn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player</span><span class="p">),</span>
+                        <span class="s2">&quot;pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">,</span>
+                    <span class="p">}</span>  <span class="c1"># Returns action to director</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;moved&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;player_pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">,</span>
+        <span class="p">}</span>  <span class="c1"># Returns action to director</span></div>
+
+
+    <span class="c1"># -- Building activation --</span>
+
+<div class="viewcode-block" id="OverworldManager.activate_building">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.activate_building">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">activate_building</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">building</span><span class="p">:</span> <span class="n">Shop</span> <span class="o">|</span> <span class="n">Inn</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Send activation action to the director.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;enter_building&quot;</span><span class="p">,</span> <span class="s2">&quot;building&quot;</span><span class="p">:</span> <span class="n">building</span><span class="p">}</span></div>
+
+
+    <span class="c1"># -- Save data --</span>
+
+<div class="viewcode-block" id="OverworldManager.get_save_data">
+<a class="viewcode-back" href="../../managers_package.html#managers_package.overworld_manager.OverworldManager.get_save_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the save data of the overworld.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;seed_coordinates&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span> <span class="s2">&quot;player_pos&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_pos</span><span class="p">}</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Adam Worsnip.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
