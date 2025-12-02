@@ -2,4 +2,4 @@ __pycache__/
 .DS_Store
 .venv/
 debug.log
-game_data/*
+game_data/*.json
