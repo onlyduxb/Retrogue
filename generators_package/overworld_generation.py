@@ -17,7 +17,10 @@ def hash_function(coordinates: tuple[int, int]):
     y_len = len(str(abs(y)))
     x_half = str(x)[0 : x_len // 2]
     y_half = str(y)[0 : y_len // 2]
-    return int(x_half + y_half)
+    try:
+        return int(x_half + y_half)
+    except:
+        return random.randint(100,10000)
 
 
 def poisson_disk_sampling(
