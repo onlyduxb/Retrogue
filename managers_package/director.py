@@ -99,7 +99,7 @@ class Director:
             scene = self.scenes[self.current_scene]
             scene_manager = self.scene_managers[self.current_scene]  # type: ignore
             scene.draw()  # Draws the scene
-            key = self.stdscr.getch()  # Fetches player input
+            key = self.stdscr.getkey()  # Fetches player input
             next_scene = scene.handle_input(
                 key
             )  # Scene recieves the player input and returns an action

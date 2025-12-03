@@ -51,21 +51,23 @@ class Scene:
 
     def handle_input(self, key) -> Any:
         """Take a key input from the player and returns an action to the director to be passed to the manager."""
-        movements = {
-            ord("w"): (-1, 0),
-            ord("s"): (1, 0),
-            ord("a"): (0, -1),
-            ord("d"): (0, 1),
-        }
-        if key in movements.keys():
-            return {"action": "move", "vector": movements.get(key)} # Action returned to director
-        elif key == ord("m"):
-            return {"action": "open_menu"} # Action returned to director
-        elif key == ord('q'):
-            return {'action': 'use_item', 'slot': 0}
-        elif key == ord('e'):
-            return {'action': 'use_item', 'slot': 1}
-        return {"action": "move", "vector": (0,0)} # No movement
+        match key:
+            case "w" | "KEY_UP":
+                return {"action": "move", "vector": (-1, 0)}
+            case "s" | "KEY_DOWN": 
+                return {"action": "move", "vector":(1, 0)}
+            case "a" | "KEY_LEFT": 
+                return {"action": "move", "vector":(0, -1)}
+            case "d" | "KEY_RIGHT": 
+                return {"action": "move", "vector":(0, 1)}
+            case "m" | '':
+                return {"action": "open_menu"}
+            case 'q':
+                return {'action': 'use_item', 'slot': 0}
+            case 'e':
+                return {'action': 'use_item', 'slot': 1}
+            case _:
+                return {"action": "move", "vector": (0,0)} # No movement
     
     def add_text_bottom(self):
         """Add self.bottom_text to the bottom of the screen."""

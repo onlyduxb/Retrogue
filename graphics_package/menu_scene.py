@@ -3,7 +3,6 @@
 # -- Imports --
 
 import curses
-from typing import Any
 
 from graphics_package.scene import Scene
 from managers_package.menu_manager import MenuManager
@@ -66,18 +65,19 @@ class MenuScene(Scene):
 
     def handle_input(self, key):
         """Different to other scenes as this scene only deals with selecting the new option it does not take in inputs such as 'A' or 'D'."""
-        if key in [ord("w"), curses.KEY_UP]:
-            self.manager_obj.current_menu.current_selection = (self.manager_obj.current_menu.current_selection - 1) % len(
+        match key:
+            case 'w' | 'KEY_UP':
+                self.manager_obj.current_menu.current_selection = (self.manager_obj.current_menu.current_selection - 1) % len(
                 self.options
-            )  # Selects the option above
-            self.draw()
-        elif key in [ord("s"), curses.KEY_DOWN]:
-            self.manager_obj.current_menu.current_selection = (self.manager_obj.current_menu.current_selection + 1) % len(
-                self.options
-            )  # Selects the option below
-            self.draw()
-        elif key in ["\n", curses.KEY_RIGHT, 10]:
-            return {"action": "select_menu", "menu_index": self.manager_obj.current_menu.current_selection}
+                )  # Selects the option above
+                self.draw()
+            case "s" | 'KEY_DOWN':
+                self.manager_obj.current_menu.current_selection = (self.manager_obj.current_menu.current_selection + 1) % len(
+                    self.options
+                )  # Selects the option below
+                self.draw()
+            case "\n" | 'KEY_RIGHT':
+                return {"action": "select_menu", "menu_index": self.manager_obj.current_menu.current_selection}
         
     def extract_obj(self, obj: MenuManager):
         """Extract manager."""
