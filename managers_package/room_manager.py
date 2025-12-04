@@ -12,8 +12,8 @@ import torch
 
 from generators_package.entity_generator import Agent, DudEntity, Entity, Player
 from generators_package.room_generator import RoomGenerator
-from managers_package.entity_manager import EntityManager
 from managers_package.chest_manager import Chest
+from managers_package.entity_manager import EntityManager
 from nn_package import encode_inputs
 
 
@@ -98,7 +98,7 @@ class RoomManager:
         self.item_factory = item_factory
         self.dungeon_manager = dungeon_manager  # Parent dungeon
         self.empty_char = " _ "
-        self.wall_char = " `# "
+        self.wall_char = " # "
         self.door_char = " / "
         self.chest_char = ' C '
         self.coordinates: tuple[int, int] = (
