@@ -126,5 +126,5 @@ if __name__ == "__main__":
             random.randint(0, 10000),
         )  # Randomly generates coordinates
         player_pos = None
-    curses.set_escdelay(0)
+    curses.set_escdelay(1)
     curses.wrapper(launcher, player_object, coordinates, player_pos, save_name)
