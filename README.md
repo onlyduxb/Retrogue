@@ -4,10 +4,10 @@
 Install requirements.txt then run main.py.
 
 ## Controls
-w - Move forward \
-a - Move left \
-s - Move backwards \
-d - Move right \
-m - Open menu \
+W / Up arrow - Move forward \
+A / Left arrow - Move left \
+S / Down arrow - Move backwards \
+D / Right arrow - Move right \
+m / esc - Open menu \
 q - Use item slot 1 \
 e - Use item slot 2
