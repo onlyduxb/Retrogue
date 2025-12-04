@@ -80,6 +80,8 @@ class DungeonScene(Scene):
                     else:
                         colour = curses.color_pair(4)
                         coloured = True
+                    if not self.manager_obj.player.is_making_noise: # When the player is not making noise make the character dimmer
+                        colour |= curses.A_DIM
                 if tile == " # ":
                     colour = curses.color_pair(1)
                     coloured = True

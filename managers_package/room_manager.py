@@ -98,7 +98,7 @@ class RoomManager:
         self.item_factory = item_factory
         self.dungeon_manager = dungeon_manager  # Parent dungeon
         self.empty_char = " _ "
-        self.wall_char = " # "
+        self.wall_char = " `# "
         self.door_char = " / "
         self.chest_char = ' C '
         self.coordinates: tuple[int, int] = (
@@ -119,7 +119,7 @@ class RoomManager:
         self.SOUND_DECAY_CONSTANT: float = (
             0.65  # Multiplier to stop decay the sound over a distance
         )
-        self.FOOTSTEP_DURATION: float = 2.5  # Time that a footstep lasts for
+        self.FOOTSTEP_DURATION: float = 1.5  # Time that a footstep lasts for
         self.HIT_COLOUR_DURATION: float = (
             1  # Time that an entity turns red after being attacked
         )

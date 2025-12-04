@@ -31,11 +31,14 @@ class DungeonManager:
         """Initalise dungeon manager."""
         self.player = player  # Player object
         self.debugger = debugger  # Debugger
-        self.weapon_factory=weapon_factory # Weapon factory
-        self.item_factory=item_factory # Item factory
+        self.weapon_factory = weapon_factory  # Weapon factory
+        self.item_factory = item_factory  # Item factory
         self.dungeon_size = size  # How many rooms can stem from the original room
         self.graph = RoomGraph(
-            dungeon_manager=self, weapon_factory=self.weapon_factory, item_factory=self.item_factory, max_level=self.dungeon_size
+            dungeon_manager=self,
+            weapon_factory=self.weapon_factory,
+            item_factory=self.item_factory,
+            max_level=self.dungeon_size,
         )  # Room graph
         self.current_room: RoomManager | Any = self.graph.initial_room  # Inital room
         self.current_room.activate_room()  # Activates the inital room
@@ -49,9 +52,9 @@ class DungeonManager:
                 if result.get("vector") != (0, 0):
                     self.current_room.generate_heat_map()
                 noise_text = (
-                    "Enemies can not hear you"
+                    "You are invisible"
                     if result.get("noise") == False
-                    else "Enemies can hear you"
+                    else "You are visible"
                 )
                 return {"action": "moved", "vector": vector, "notify": noise_text}
             case (
@@ -74,7 +77,7 @@ class DungeonManager:
                 # else:
                 #     self.player.weapon = chest.loot_chest()
                 return result
-            case 'death':
+            case "death":
                 return result
 
     def start_dungeon(self):
@@ -94,7 +97,9 @@ class RoomGraph:
     ```
     """
 
-    def __init__(self, dungeon_manager: DungeonManager, weapon_factory, item_factory, max_level=2) -> None:
+    def __init__(
+        self, dungeon_manager: DungeonManager, weapon_factory, item_factory, max_level=2
+    ) -> None:
         """Initialise graph."""
         self.dungeon_manager = dungeon_manager  # Debugger
         self.initial_room = RoomManager(
