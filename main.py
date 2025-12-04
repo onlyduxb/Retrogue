@@ -48,7 +48,12 @@ def launcher(stdscr, player, overworld_coordinates, player_position, file_name):
         player_pos=player_position,
         debugger=debug_manager,
     )
-    menu = MenuManager(debugger=debug_manager, weapon_factory=weapon_factory, item_factory=item_factory, player=player)
+    menu = MenuManager(
+        debugger=debug_manager,
+        weapon_factory=weapon_factory,
+        item_factory=item_factory,
+        player=player,
+    )
 
     director = Director(
         stdscr,
@@ -71,7 +76,7 @@ if __name__ == "__main__":
     SAVE_PATH = f"{CURRENT_PATH}/game_data"  # Path to game saves
 
     art = text2art("retrogue", font="Chiseled")  # Title screen
-    for row in art: 
+    for row in art:
         for letter in row:  # type: ignore
             print(letter, end="")
             sleep(0.001)
@@ -121,4 +126,5 @@ if __name__ == "__main__":
             random.randint(0, 10000),
         )  # Randomly generates coordinates
         player_pos = None
+    os.environ.setdefault("ESCDELAY", "25")
     curses.wrapper(launcher, player_object, coordinates, player_pos, save_name)
