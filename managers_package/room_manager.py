@@ -198,7 +198,7 @@ class RoomManager:
                 y, x = random.randint(1, len(self.map) - 2), random.randint(
                     1, len(self.map) - 2
                 )
-                if self.map[y][x] not in [" / ", " # "]:
+                if self.map[y][x] not in [self.door_char, self.wall_char]:
                     self.map[y][x] = self.entity_manager.player.char
                     self.entity_manager.player.pos = (y, x)
                     break

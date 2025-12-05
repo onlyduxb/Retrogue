@@ -119,7 +119,7 @@ if __name__ == "__main__":
         player_object = Player(
             debugger=debug_manager,
             weapon=weapon_factory.create("fists"),
-            inventory=[item_factory.create("None"), item_factory.create("None")],
+            inventory=[item_factory.create("None"), item_factory.create("None")]
         )  # Creates player obj
         coordinates = (
             random.randint(0, 10000),
