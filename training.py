@@ -88,7 +88,7 @@ def test_model(weapon_factory, item_factory):
     while True:
         game = RoomManager(
             debugger=debug,
-            player=Player(debugger=debug, weapon=weapon_factory.create('fists'), inventory=[item_factory.create('fists') for i in range(2)],level=random.randint(0, 10)),
+            player=Player(debugger=debug, weapon=weapon_factory.create('fists'), inventory=[item_factory.create('None') for i in range(2)],level=random.randint(0, 10)),
             dungeon_manager=None,
             coordinates=(random.randint(0, 1000), random.randint(0, 1000)),
             enemy_count=random.randint(1, 4),
@@ -155,7 +155,7 @@ def train_model(desired_accuracy, min_step, log, max_train, name, debug, weapon_
         correct = False
         game = RoomManager(
             debugger=debug,
-            player=Player(debugger=debug, weapon=weapon_factory.create('fists'), inventory=[item_factory.create('fists') for i in range(2)],level=random.randint(0, 10)),
+            player=Player(debugger=debug, weapon=weapon_factory.create('fists'), inventory=[item_factory.create('None') for i in range(2)],level=random.randint(0, 10)),
             dungeon_manager=None,
             coordinates=(random.randint(0, 1000), random.randint(0, 1000)),
             enemy_count=random.randint(1, 5),
