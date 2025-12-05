@@ -34,13 +34,6 @@ class MenuManager:
             self.menu_stack.pop()
             self.current_menu = self.menu_stack[-1]
 
-    def get_breadcrumbs(self) -> str:
-        """Return the path of menus to current menu."""
-        path = ''
-        for menu in self.menu_stack:
-            path+=f'{menu.name}/'
-        return path
-
     def run_selected_menu(self, index: int):
         """Run the selected option's callback and handle navigation actions."""
         selected_callback = self.current_menu.get_option(index)

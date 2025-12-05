@@ -40,18 +40,12 @@ class MenuScene(Scene):
     def draw(self):
         """Draw the current scene."""
         self.options = self.manager_obj.current_menu.get_labels()
-        breadcrumbs=self.manager_obj.get_breadcrumbs()
         # if self.last_options[0] != self.options[0]:
         #     self.manager_obj.current_menu.current_selection
         self.last_options=self.options
         self.stdscr.clear()
         # Correct breadcrumb placement centered safely
         h, w = self.stdscr.getmaxyx()
-        breadcrumb_x = (w - len(breadcrumbs)) // 2
-        breadcrumb_y = h // 2 - len(self.options) // 2 - 1
-        if breadcrumb_y < 0:
-            breadcrumb_y = 0
-        self.stdscr.addstr(breadcrumb_y, breadcrumb_x, breadcrumbs)
         for idx, option in enumerate(self.options):
             x = w // 2 - len(self.options) // 2
             y = h // 2 - len(self.options) // 2 + idx + 1
@@ -78,6 +72,8 @@ class MenuScene(Scene):
                 self.draw()
             case "\n" | 'KEY_RIGHT':
                 return {"action": "select_menu", "menu_index": self.manager_obj.current_menu.current_selection}
+            case "m" | "":
+                return {"action": "exit_menu"}
         
     def extract_obj(self, obj: MenuManager):
         """Extract manager."""
