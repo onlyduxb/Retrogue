@@ -110,6 +110,8 @@ if __name__ == "__main__":
             level=player_data["level"],
             weapon=weapon_factory._build(weapon),  # type: ignore
             inventory=inventory,
+            permadeath=player_data["settings"]["permadeath"],
+            keep_inventory=player_data["settings"]["keep_inventory"]
         )
 
     else:

@@ -119,7 +119,7 @@ class Player(Entity):
     """
 
     def __init__(
-        self, debugger, weapon: Weapon, inventory: list[Item], level: int = 0, health: int = 100, base_strength=1
+        self, debugger, weapon: Weapon, inventory: list[Item], level: int = 0, health: int = 100, base_strength=1, permadeath: bool=False, keep_inventory: bool=True
     ) -> None:
         """Initialise the player."""
         super().__init__(char=" P ", level=level, health=health)
@@ -130,8 +130,8 @@ class Player(Entity):
         self.base_strength: float=base_strength
         self.weapon=weapon
         self.inventory = inventory
-        self.permadeath=False
-        self.keep_inventory=True
+        self.permadeath=permadeath
+        self.keep_inventory=keep_inventory
 
     def get_damage(self) -> float:
         """Return the damage the player will inflict."""
@@ -143,7 +143,7 @@ class Player(Entity):
 
     def get_save_data(self):
         """Return the save data."""
-        return {"health": self.health, "level": self.level, "weapon": self.weapon.to_dict(), "inventory": [item.to_dict() for item in self.inventory]}
+        return {"health": self.health, "level": self.level, "weapon": self.weapon.to_dict(), "inventory": [item.to_dict() for item in self.inventory], "settings": {"permadeath": self.permadeath, "keep_inventory": self.keep_inventory}}
     
     def use_item(self, index: int):
         """Use item at index `index`."""
