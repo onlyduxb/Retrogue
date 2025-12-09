@@ -54,6 +54,8 @@ class Chest:
             loot = selected_factory.create_random()
             self.debugger.write(f"Generated chest loot {loot.name}")
             return loot
+        else:
+            return self.loot
 
     def loot_chest(self) -> Weapon | Item | None:
         """Return weapon obj and set loot to None."""

@@ -28,11 +28,13 @@ class Menu:
         options: Dict[Callable[[], str], Callable[..., Any]],
         name: str = "",
         current_selection: int = 0,
+        description: None | str = None
     ) -> None:
         """Initilise menu."""
         self.name: str = name
         self.current_selection: int = current_selection
         self.options: Dict[Callable[[], str], Callable[..., Any]] = options
+        self.description: None | str = description
 
     def get_option(self, index: int) -> Callable[..., Any]:
         """Return the option located at index `index`."""

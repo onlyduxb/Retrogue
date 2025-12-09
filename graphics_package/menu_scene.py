@@ -40,15 +40,22 @@ class MenuScene(Scene):
     def draw(self):
         """Draw the current scene."""
         self.options = self.manager_obj.current_menu.get_labels()
-        # if self.last_options[0] != self.options[0]:
-        #     self.manager_obj.current_menu.current_selection
         self.last_options=self.options
         self.stdscr.clear()
-        # Correct breadcrumb placement centered safely
+        description = self.manager_obj.current_menu.description
+        desc_lines = []
+        if description:
+            desc_lines = description.split("\n")
         h, w = self.stdscr.getmaxyx()
+        if desc_lines:
+            for i, line in enumerate(desc_lines):
+                x_desc = w // 2 - len(line) // 2
+                y_desc = h // 2 - len(self.options) // 2 - len(desc_lines) - 1 + i
+                self.stdscr.addstr(y_desc, x_desc, line)
         for idx, option in enumerate(self.options):
             x = w // 2 - len(self.options) // 2
-            y = h // 2 - len(self.options) // 2 + idx + 1
+            offset = len(desc_lines) + 1
+            y = h // 2 - len(self.options) // 2 + idx + offset
             if idx == self.manager_obj.current_menu.current_selection:
                 self.stdscr.attron(curses.color_pair(4))  # highlight
                 self.stdscr.addstr(y, x, option)

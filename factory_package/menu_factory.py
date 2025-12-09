@@ -5,6 +5,8 @@
 from typing import Callable, Dict
 
 from generators_package.entity_generator import Player
+from generators_package.item_generator import Item, Weapon
+from managers_package.chest_manager import Chest
 from generators_package.menu_generator import Menu
 from managers_package.debug_manager import Debugger
 
@@ -45,10 +47,28 @@ class MenuFactory:
         self.player: Player = player
         self.debugger: Debugger = debugger
 
-    def create_menu(self, options: Dict[Callable[[], str], Callable], name="") -> Menu:
+    def create_menu(self, options: Dict[Callable[[], str], Callable], name="", description=None) -> Menu:
         """Create a menu."""
-        menu = Menu(options=options, name=name)
+        menu = Menu(options=options, name=name, description=description)
         return menu
+    
+    def create_chest_menu(self, chest_obj: Chest):
+        """Create chest menu."""
+        item_obj=chest_obj.loot
+        def pickup_item():
+            chest_obj.loot_chest()
+            return {"action": "pickup", "item": item_obj}
+        def resume():
+            return {"action": "resume"}
+        options = {
+            lambda: "Pickup Item": pickup_item,
+            lambda: "Leave Item": resume,
+        }
+        if type(item_obj).__name__ == 'Weapon':
+            description = f"Name: {item_obj.name} \n Damage: {int(item_obj.damage * item_obj.get_rarity_boost())} \n Rarity: {item_obj.rarity} \n Durability: {item_obj.durability} / {item_obj.max_durability}" # type: ignore
+        else:
+            description = f"Name: {item_obj.name} \n Effects strength: {item_obj.effects['strength']}" # type: ignore
+        return self.create_menu(options, description=description)
 
     def create_death_menu(self) -> Menu:
         """Create death menu."""

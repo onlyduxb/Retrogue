@@ -70,12 +70,6 @@ class DungeonManager:
             case "deal_damage":
                 return result
             case "open_chest":
-                chest = result["chest_obj"]
-                self.player.pickup(chest.loot_chest())
-                # if type(chest.loot).__name__ == 'Item':
-                #     self.player.inventory[0] = chest.loot_chest()
-                # else:
-                #     self.player.weapon = chest.loot_chest()
                 return result
             case "death":
                 return result

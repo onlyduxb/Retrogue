@@ -146,6 +146,16 @@ class Director:
                         ):  # Leaving any building returns you to the overworld
                             scene.on_exit()
                             self.current_scene = "overworld"
+                        case "open_chest":
+                            self.scenes[self.current_scene].on_exit()
+                            self.previous_scene = (
+                                "dungeon"  # Records the previous scene
+                            )
+                            self.menu_manager.current_menu = (
+                                self.menu_manager.factory.create_chest_menu(scene_action['chest_obj'])
+                            )
+                            self.current_scene = "menu"
+
                         case "death":
                             self.scenes[self.current_scene].on_exit()
                             self.previous_scene = (
@@ -155,6 +165,7 @@ class Director:
                                 self.menu_manager.factory.create_death_menu()
                             )
                             self.current_scene = "menu"
+
 
                 case "open_menu":  # Opens the menu
                     self.previous_scene = (
@@ -211,6 +222,12 @@ class Director:
                                         )
                                 self.new_scene("overworld", self.overworld_manager)
                                 self.overworld_manager.randomise_player_pos()
+                            case "pickup":
+                                self.debugger.write('picking up item')
+                                self.PLAYER.pickup(result["item"])
+                                self.scenes[self.current_scene].on_exit()
+                                self.current_scene = self.previous_scene
+                                self.previous_scene = None
                             case "quit":
                                 quit()
 
