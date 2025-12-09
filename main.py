@@ -95,7 +95,7 @@ if __name__ == "__main__":
             )
         save_name = input("Enter save name: ")
         save_data = load_game(save_name, debug_manager)  # Loads the game save data
-        item_factory.load_registry(save_data["item_rXegistry"])
+        item_factory.load_registry(save_data["item_registry"])
         weapon_factory.load_registry(save_data["weapon_registry"])
         overworld_data = save_data["overworld_data"]
         coordinates = overworld_data["seed_coordinates"]
@@ -119,7 +119,7 @@ if __name__ == "__main__":
         player_object = Player(
             debugger=debug_manager,
             weapon=weapon_factory.create("fists"),
-            inventory=[item_factory.create("None"), item_factory.create("None")]
+            inventory=[item_factory.create("None"), item_factory.create("None")],
         )  # Creates player obj
         coordinates = (
             random.randint(0, 10000),
