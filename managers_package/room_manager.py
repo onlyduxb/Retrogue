@@ -530,6 +530,9 @@ class RoomManager:
                     damage: float=0
                     if not isinstance(attacked_entity, Player):
                         damage=self.entity_manager.player.get_damage()
+                        self.entity_manager.player.weapon.durability-=1
+                        if self.entity_manager.player.weapon.is_broken():
+                            self.entity_manager.player.pickup(self.weapon_factory.create('fists'))
                     else:
                         damage=10
                     attacked_entity.deal_damage(damage)  # Deals damage to the attacked entity

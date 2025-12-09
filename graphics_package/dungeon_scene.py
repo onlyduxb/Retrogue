@@ -118,7 +118,8 @@ class DungeonScene(Scene):
                 5, 1, f". Crit damage {int(weapon.damage * weapon.get_rarity_boost() * weapon.crit_mult * player.base_strength)}"
             )
             self.stat_win.addstr(6, 1, f". Rarity: {weapon.rarity}")
-            self.stat_win.addstr(7, 1, f". Inventory: {inventory_names}")
+            self.stat_win.addstr(7, 1, f". Durability: {weapon.durability}")
+            self.stat_win.addstr(8, 1, f". Inventory: {inventory_names}")
             self.stat_win.noutrefresh()
 
     def damage_colour(self, coordinates: tuple[int, int]):

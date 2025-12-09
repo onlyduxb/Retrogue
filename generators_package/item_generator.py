@@ -31,6 +31,8 @@ class Weapon:
         name: str,
         damage: int = 10,
         rarity: str = "Common",
+        durability: int = 100,
+        max_durability: int = 100,
     ) -> None:
         """Initilises weapon."""
         self.name: str = name  # Weapon name
@@ -38,6 +40,10 @@ class Weapon:
         self.crit_chance = 0.15  # Probability to do a critical hit
         self.crit_mult = 1.45  # Crit multiplier
         self.rarity: str = rarity  # Weapon rarity
+        if durability > max_durability:
+            raise ValueError('Durability can not be greater than maximum durability')
+        self.durability: int = durability
+        self.max_durability: int = max_durability
 
     def get_damage(self) -> float:
         """Return the damage a weapon deals."""
@@ -56,8 +62,11 @@ class Weapon:
 
     def to_dict(self):
         """Return a dictionary of the weapon information."""
-        return {"name": self.name, "damage": self.damage, "rarity": self.rarity}
-
+        return {"name": self.name, "damage": self.damage, "rarity": self.rarity, "max_durability": self.max_durability, "durability": self.durability}
+    
+    def is_broken(self) -> bool:
+        """Return true if the item's durability <= 0."""
+        return True if self.durability <= 0 else False
 
 class Item:
     """Items.

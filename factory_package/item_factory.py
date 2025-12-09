@@ -105,11 +105,11 @@ class WeaponFactory(Factory[Weapon]):
     @classmethod
     def initilise_registry(cls):
         """Initilise registry."""
-        cls.register("fists", {"name": "fists", "damage": 10, "rarity": "Common"})
-        cls.register("sword", {"name": "sword", "damage": 20, "rarity": "Common"})
-        cls.register("dagger", {"name": "dagger", "damage": 15, "rarity": "Common"})
-        cls.register("mace", {"name": "mace", "damage": 25, "rarity": "Common"})
-        cls.register("hammer", {"name": "hammer", "damage": 15, "rarity": "Common"})
+        cls.register("fists", {"name": "fists", "damage": 10, "rarity": "Common", "max_durability": 1, "durability": 1})
+        cls.register("sword", {"name": "sword", "damage": 20, "rarity": "Common", "max_durability": 100, "durability": 100})
+        cls.register("dagger", {"name": "dagger", "damage": 15, "rarity": "Common", "max_durability": 100, "durability": 100})
+        cls.register("mace", {"name": "mace", "damage": 25, "rarity": "Common", "max_durability": 100, "durability": 100})
+        cls.register("hammer", {"name": "hammer", "damage": 15, "rarity": "Common", "max_durability": 100, "durability": 100})
 
     @classmethod
     def _build(cls, params: dict) -> Weapon:
@@ -126,6 +126,7 @@ class WeaponFactory(Factory[Weapon]):
         rarity = random.choices(rarities, weights=probabilities, k=1)[0]
         params = dict(cls._data[weapon_name])
         params["rarity"] = rarity
+        params["durability"]=int(max(0, min(params["max_durability"], random.gauss(75, 10))))
         return cls._build(params)
 
 
