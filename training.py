@@ -235,7 +235,8 @@ def train_model(desired_accuracy, min_step, log, max_train, name, debug, weapon_
 if __name__ == "__main__":
     model = MovementNet()
     load_choice = input("Load existing model? (y/n) \n-> ").lower()
-    debug = Debugger("Trainer", dud=True)
+    debug = Debugger("Trainer")
+    debug.on=False
     weapon_factory=WeaponFactory()
     item_factory=ItemFactory()
     weapon_factory.initilise_registry()
