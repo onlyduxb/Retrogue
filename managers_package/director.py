@@ -224,7 +224,8 @@ class Director:
                                 self.overworld_manager.randomise_player_pos()
                             case "pickup":
                                 self.debugger.write('picking up item')
-                                self.PLAYER.pickup(result["item"])
+                                if self.PLAYER.pickup(result["item"]):
+                                    result["chest"].loot_chest()
                                 self.scenes[self.current_scene].on_exit()
                                 self.current_scene = self.previous_scene
                                 self.previous_scene = None

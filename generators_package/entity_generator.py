@@ -167,9 +167,10 @@ class Player(Entity):
             for index, slot in enumerate(self.inventory):
                 if slot.name == 'None':
                     self.inventory[index]=obj
-                    return
+                    return True
         else:
             self.weapon=obj
+            return True
 
     def death_action(self):
         """Return the action for player death."""

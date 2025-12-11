@@ -59,6 +59,4 @@ class Chest:
 
     def loot_chest(self) -> Weapon | Item | None:
         """Return weapon obj and set loot to None."""
-        item_obj = self.loot
         self.loot = self.item_factory.create("None")
-        return item_obj

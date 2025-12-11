@@ -127,7 +127,7 @@ if __name__ == "__main__":
             random.randint(0, 10000),
             random.randint(0, 10000),
         )  # Randomly generates coordinates
-    player_pos = None
+        player_pos = None
     try:
         curses.set_escdelay(1)
     except:

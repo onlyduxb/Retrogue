@@ -56,8 +56,7 @@ class MenuFactory:
         """Create chest menu."""
         item_obj=chest_obj.loot
         def pickup_item():
-            chest_obj.loot_chest()
-            return {"action": "pickup", "item": item_obj}
+            return {"action": "pickup", "item": item_obj, "chest": chest_obj}
         def resume():
             return {"action": "resume"}
         options = {
