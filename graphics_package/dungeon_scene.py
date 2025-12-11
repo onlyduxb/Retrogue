@@ -48,7 +48,7 @@ class DungeonScene(Scene):
     def on_enter(self):
         """Run when entering a scene."""
         h, w = self.stdscr.getmaxyx()
-        self.stat_win = curses.newwin(12, 20, 0, w - 20)
+        self.stat_win = curses.newwin(1, 1, 0, w - 1)
         self.stdscr.nodelay(True)  # Makes curses 'non-blocking'
 
     def draw(self):
@@ -104,22 +104,35 @@ class DungeonScene(Scene):
 
     def draw_side_win(self):
         """Draw the side window."""
+        assert self.stat_win is not None
         player = self.manager_obj.player  # gets player object
         weapon = self.manager_obj.player.weapon
         inventory_names = [item.name for item in player.inventory]
+
+        # Auto-scale side window
+        lines = [
+            f"Health: {player.health} / {player.max_health}",
+            f"{weapon.name}",
+            f". Weapon Damage: {weapon.damage * weapon.get_rarity_boost() *  player.base_strength}",
+            f". Crit chance: {weapon.crit_chance}",
+            f". Crit damage {int(weapon.damage * weapon.get_rarity_boost() * weapon.crit_mult * player.base_strength)}",
+            f". Rarity: {weapon.rarity}",
+            f". Durability: {weapon.durability} / {weapon.max_durability}",
+            f". Inventory: {inventory_names}",
+        ]
+
+        max_width = max(len(line) for line in lines) + 2
+        height = len(lines) + 2
+
+        h, w = self.stdscr.getmaxyx()
+        self.stat_win.resize(height, max_width)
+        self.stat_win.mvwin(0, w - max_width)
+
         if self.stat_win:  # Display player stats and held weapon stats
             self.stat_win.clear()
             self.stat_win.box()
-            self.stat_win.addstr(1, 1, f"Health: {player.health} / {player.max_health}")
-            self.stat_win.addstr(2, 1, f"{weapon.name}")
-            self.stat_win.addstr(3, 1, f". Weapon Damage: {weapon.damage * weapon.get_rarity_boost() *  player.base_strength}")
-            self.stat_win.addstr(4, 1, f". Crit chance: {weapon.crit_chance}")
-            self.stat_win.addstr(
-                5, 1, f". Crit damage {int(weapon.damage * weapon.get_rarity_boost() * weapon.crit_mult * player.base_strength)}"
-            )
-            self.stat_win.addstr(6, 1, f". Rarity: {weapon.rarity}")
-            self.stat_win.addstr(7, 1, f". Durability: {weapon.durability} / {weapon.max_durability}")
-            self.stat_win.addstr(8, 1, f". Inventory: {inventory_names}")
+            for idx, line in enumerate(lines, start=1):
+                self.stat_win.addstr(idx, 1, line)
             self.stat_win.noutrefresh()
 
     def damage_colour(self, coordinates: tuple[int, int]):
