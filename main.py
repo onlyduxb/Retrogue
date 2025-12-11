@@ -128,7 +128,7 @@ if __name__ == "__main__":
             random.randint(0, 10000),
         )  # Randomly generates coordinates
         player_pos = None
-        custom_weapons=input('Would you like to add some custome weapons (y/n)? \n-> ')
+        custom_weapons=input('Would you like to add some custom weapons (y/n)? \n-> ')
         if custom_weapons == 'y':
             while True:
                 custom_weapon_name=input('Enter a weapon name \n-> ')
