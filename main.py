@@ -111,7 +111,7 @@ if __name__ == "__main__":
             weapon=weapon_factory._build(weapon),  # type: ignore
             inventory=inventory,
             permadeath=player_data["settings"]["permadeath"],
-            keep_inventory=player_data["settings"]["keep_inventory"]
+            keep_inventory=player_data["settings"]["keep_inventory"],
         )
 
     else:
@@ -128,15 +128,30 @@ if __name__ == "__main__":
             random.randint(0, 10000),
         )  # Randomly generates coordinates
         player_pos = None
-        custom_weapons=input('Would you like to add some custom weapons (y/n)? \n-> ')
-        if custom_weapons == 'y':
+        custom_weapons = input("Would you like to add some custom weapons (y/n)? \n-> ")
+        if custom_weapons == "y":
             while True:
-                custom_weapon_name=input('Enter a weapon name \n-> ')
-                custom_weapon_damage=int(input('Enter an integer weapon damage \n-> '))
-                custom_weapon_durability=int(input('Enter the maximum durability for this weapon \n-> '))
-                weapon_factory.register(custom_weapon_name, {"name": custom_weapon_name, "damage": custom_weapon_damage, "rarity": "Common", "max_durability": custom_weapon_durability, "durability": custom_weapon_durability})
-                another_weapon=input('Would you like to create another weapon (y/n)? \n-> ')
-                if another_weapon != 'y':
+                custom_weapon_name = input("Enter a weapon name \n-> ")
+                custom_weapon_damage = int(
+                    input("Enter an integer weapon damage \n-> ")
+                )
+                custom_weapon_durability = int(
+                    input("Enter the maximum durability for this weapon \n-> ")
+                )
+                weapon_factory.register(
+                    custom_weapon_name,
+                    {
+                        "name": custom_weapon_name,
+                        "damage": custom_weapon_damage,
+                        "rarity": "Common",
+                        "max_durability": custom_weapon_durability,
+                        "durability": custom_weapon_durability,
+                    },
+                )
+                another_weapon = input(
+                    "Would you like to create another weapon (y/n)? \n-> "
+                )
+                if another_weapon != "y":
                     break
     try:
         curses.set_escdelay(1)
